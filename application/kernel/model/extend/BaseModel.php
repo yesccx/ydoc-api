@@ -14,7 +14,7 @@ use think\model\concern\SoftDelete;
 
 abstract class BaseModel extends Model {
 
-    use SoftDelete, ModelCommon, QueryCommon;
+    use SoftDelete, ModelCommon, QueryCommon, ModelEntity;
 
     // 开启软删除
     protected $deleteTime = 'delete_time';

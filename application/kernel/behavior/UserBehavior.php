@@ -10,6 +10,7 @@
 namespace app\kernel\behavior;
 
 use app\entity\YUserEntity;
+use app\extend\UserAvatar;
 
 class UserBehavior {
 
@@ -21,6 +22,9 @@ class UserBehavior {
      */
     public function userRegisted(YUserEntity $userEntity) {
         // TODO: 用户注册成功后，初始化头像等信息
+
+        // 初始化用户头像
+        (new UserAvatar($userEntity->id))->initUserAvatar();
     }
 
 }

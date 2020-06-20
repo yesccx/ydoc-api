@@ -79,3 +79,16 @@ function traceLog($content, $level = 'debug') {
 
     return true;
 }
+
+/**
+ * 创建目录
+ *
+ * @param  string $dirname 目录名称
+ * @return string 目录名称
+ */
+function checkMkdir($dirname) {
+    if (!is_dir($dirname)) {
+        mkdir($dirname, 0755, true);
+    }
+    return $dirname;
+}

@@ -12,11 +12,11 @@ namespace app\logic\user;
 use app\constants\common\AppHookCode;
 use app\entity\YUserEntity;
 use app\exception\AppException;
+use app\extend\common\AppHook;
 use app\kernel\model\YUserModel;
 use app\kernel\validate\user\UserRegitserValidate;
 use app\logic\extend\BaseLogic;
 use app\utils\user\UserPasswordHandler;
-use think\facade\Hook;
 
 class UserAccountRegisterLogic extends BaseLogic {
 
@@ -65,7 +65,7 @@ class UserAccountRegisterLogic extends BaseLogic {
             throw new AppException('用户信息初始化失败');
         }
 
-        Hook::listen(AppHookCode::USER_REGISTED, YUserEntity::make($userInfo));
+        AppHook::listen(AppHookCode::USER_REGISTED, YUserEntity::make($userInfo));
 
         return $this;
     }

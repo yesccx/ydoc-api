@@ -9,6 +9,7 @@
 
 namespace app\controller\v1\user;
 
+use app\extend\session\AppSession;
 use app\kernel\base\AppBaseController;
 use app\service\UserService;
 
@@ -23,6 +24,14 @@ class UserCenterController extends AppBaseController {
             return $this->responseSessionInvalid('用户信息不存在');
         }
         return $this->responseData($user);
+    }
+
+    /**
+     * 用户退出登录
+     */
+    public function userLogout() {
+        AppSession::make()->destroy();
+        return $this->responseSuccess('退出登录成功');
     }
 
 }

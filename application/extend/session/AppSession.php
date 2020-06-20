@@ -9,6 +9,9 @@
 
 namespace app\extend\session;
 
+use app\constants\common\AppCacheCode;
+use app\extend\common\AppCache;
+
 /**
  * @method static int getUid() 会话uid
  */
@@ -108,6 +111,15 @@ class AppSession {
     public function setUid($uid = 0) {
         $this->uid = $uid;
         return $this;
+    }
+
+    /**
+     * 销毁会话信息
+     *
+     * @return void
+     */
+    public function destroy() {
+        AppCache::tag(AppCacheCode::USER__SESSION_CODE)->rm($this->uid);
     }
 
 }
