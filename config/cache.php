@@ -13,13 +13,25 @@
 // | 缓存设置
 // +----------------------------------------------------------------------
 
-return [
+$conf = [
     // 驱动方式
     'type'   => 'File',
     // 缓存保存目录
     'path'   => '',
     // 缓存前缀
-    'prefix' => '',
+    'prefix' => 'ydoc@',
     // 缓存有效期 0表示永久缓存
     'expire' => 0,
 ];
+
+//redis驱动
+$type = env('APP.CACHE_TYPE', 'file');
+if ($type == 'redis') {
+    $conf = array_merge($conf, [
+        'type' => 'redis',
+        'host' => env('REDIS.HOSTNAME', '127.0.0.1'),
+        'port' => env('REDIS.PORT', '6379'),
+    ]);
+}
+
+return $conf;

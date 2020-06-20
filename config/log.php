@@ -18,13 +18,17 @@ return [
     // 日志保存目录
     'path'        => '',
     // 日志记录级别
-    'level'       => [],
+    'level'       => ['error', 'warning', 'request'],
     // 单文件日志写入
     'single'      => false,
     // 独立日志级别
-    'apart_level' => [],
+    'apart_level' => ['error', 'warning'],
     // 最大日志文件数量
     'max_files'   => 0,
     // 是否关闭日志写入
     'close'       => false,
+    // 日志日期格式
+    'time_format' => 'Y-m-d H:i:s',
+    // 日志文件最大大小
+    'file_size'   => 1024 * 1024 * 3,
 ];
