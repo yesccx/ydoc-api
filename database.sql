@@ -5,6 +5,7 @@ CREATE TABLE `y_library` (
   `team_id` int(10) UNSIGNED NOT NULL DEFAULT '0' COMMENT '团队id',
   `name` varchar(32) NOT NULL DEFAULT '' COMMENT '文档库名称',
   `desc` varchar(255) NOT NULL DEFAULT '' COMMENT '文档库简介',
+  `cover` varchar(512) NOT NULL DEFAULT '' COMMENT '文档库封面图片url',
   `sort` int(10) UNSIGNED NOT NULL DEFAULT '0' COMMENT '排序 从大到小',
   `status` tinyint(1) UNSIGNED NOT NULL DEFAULT 0 COMMENT '文档库状态 1正常 2归档',
   `delete_time` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '删除时间 0表示未删除',
@@ -18,14 +19,16 @@ CREATE TABLE `y_library_member` (
   `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '自增id',
   `library_id` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '文档库id',
   `library_name` varchar(32) NOT NULL DEFAULT '' COMMENT '文档库名称(冗余字段)',
+  `library_alias` varchar(32) NOT NULL DEFAULT '' COMMENT '文档库别名',
   `group_id` int(10) UNSIGNED NOT NULL DEFAULT '0' COMMENT '文档库分组id',
   `sort` int(10) UNSIGNED NOT NULL DEFAULT '0' COMMENT '排序 从大到小',
   `uid` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '成员uid',
   `urole` tinyint(1) UNSIGNED NOT NULL DEFAULT 0 COMMENT '成员角色',
-  `status` tinyint(1) UNSIGNED NOT NULL DEFAULT 0 COMMENT '成员状态：0审核中 1正式成员 2已禁用',
+  `status` tinyint(1) UNSIGNED NOT NULL DEFAULT 0 COMMENT '成员状态：0审核中 1启用 2禁用',
   `delete_time` int(10) UNSIGNED NOT NULL DEFAULT '0' COMMENT '删除时间 0表示未删除',
   `apply_time` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '申请加入时间',
   `create_time` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '加入团队时间',
+  `update_time` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '更新时间',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT '文档库成员表';
 
@@ -81,6 +84,7 @@ CREATE TABLE `y_user` (
   `avatar` varchar(255) NOT NULL DEFAULT '' COMMENT '用户头像',
   `email` varchar(32) NOT NULL DEFAULT '' COMMENT '用户邮箱',
   `nickname` varchar(32) NOT NULL DEFAULT '' COMMENT '用户昵称',
+  `status` tinyint(1) UNSIGNED NOT NULL DEFAULT 1 COMMENT '用户状态：0审核中 1正常 2禁用',
   `delete_time` int(10) UNSIGNED NOT NULL DEFAULT '0' COMMENT '删除时间 0表示未删除',
   `create_time` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '用户注册时间',
   PRIMARY KEY (`id`)
@@ -153,16 +157,15 @@ CREATE TABLE `y_team_member_apply` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT '团队成员申请表';
 
-DROP TABLE IF EXISTS `y_library_action_dynamic`;
-CREATE TABLE `y_library_action_dynamic` (
+DROP TABLE IF EXISTS `y_library_log`;
+CREATE TABLE `y_library_log` (
   `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '自增id',
   `library_id` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '文档库id',
   `uid` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '成员uid',
-  `module_id` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '关联id',
-  `module_type` varchar(32) NOT NULL DEFAULT '' COMMENT '关联类型',
-  `module_params` varchar(512) NOT NULL DEFAULT '' COMMENT '关联参数',
+  `operate_type` varchar(64) NOT NULL DEFAULT '' COMMENT '操作类型',
+  `operate_params` text NOT NULL DEFAULT '' COMMENT '操作参数 json格式',
   `remark` varchar(255) NOT NULL DEFAULT '' COMMENT '备注',
   `delete_time` int(10) UNSIGNED NOT NULL DEFAULT '0' COMMENT '删除时间 0表示未删除',
   `create_time` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '操作时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT '文档库操作动态';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT '文档库相关日志';

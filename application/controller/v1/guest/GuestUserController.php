@@ -9,7 +9,7 @@
 
 namespace app\controller\v1\guest;
 
-use app\entity\YUserEntity;
+use app\entity\model\YUserEntity;
 use app\kernel\base\AppBaseController;
 use app\logic\user\UserAccountLoginLogic;
 use app\logic\user\UserAccountRegisterLogic;

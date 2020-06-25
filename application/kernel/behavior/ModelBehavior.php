@@ -49,6 +49,16 @@ class ModelBehavior {
                 'page_num'  => $paginate->pageNum,
             ]);
         });
+
+        /**
+         * 软删除
+         *
+         * @param Query $query
+         * @return $this
+         */
+        Query::extend('softDelete', function (Query $query) {
+            return $query->useSoftDelete('delete_time', time())->delete();
+        });
     }
 
 }

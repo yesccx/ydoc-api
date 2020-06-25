@@ -29,7 +29,7 @@ trait ModelEntity {
     public function toEntity() {
         if (empty($this->entityClass)) {
             $clazz = parse_name($this->table, 1) . 'Entity';
-            $this->entityClass = "app\\entity\\{$clazz}";
+            $this->entityClass = "app\\entity\\model\\{$clazz}";
         }
         return $this->entityClass::make($this->toArray());
     }

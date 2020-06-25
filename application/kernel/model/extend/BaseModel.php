@@ -9,12 +9,13 @@
 
 namespace app\kernel\model\extend;
 
+use app\traits\common\EntityMake;
 use think\Model;
 use think\model\concern\SoftDelete;
 
 abstract class BaseModel extends Model {
 
-    use SoftDelete, ModelCommon, QueryCommon, ModelEntity;
+    use SoftDelete, ModelCommon, QueryCommon, ModelEntity, EntityMake;
 
     // 开启软删除
     protected $deleteTime = 'delete_time';

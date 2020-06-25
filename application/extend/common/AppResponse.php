@@ -20,6 +20,9 @@ class AppResponse {
      * @return void
      */
     public static function data($data) {
+        if ($data instanceof \ArrayAccess) {
+            $data = $data->toArray();
+        }
         return self::handleResponse(AppResponseCode::SUCCESS, 'ok', $data);
     }
 
@@ -61,7 +64,7 @@ class AppResponse {
      * @param array|string|int $data 数据
      * @return void
      */
-    protected static function handleResponse(int $code, string $msg = '', $data = []) {
+    public static function handleResponse(int $code, string $msg = '', $data = []) {
         die(json(['code' => $code, 'msg' => $msg, 'data' => $data])->send());
     }
 

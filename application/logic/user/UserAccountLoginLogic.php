@@ -9,7 +9,8 @@
 
 namespace app\logic\user;
 
-use app\entity\YUserEntity;
+use app\constants\model\YUserCode;
+use app\entity\model\YUserEntity;
 use app\exception\AppException;
 use app\extend\common\AppQuery;
 use app\extend\session\AppSession;
@@ -28,14 +29,7 @@ class UserAccountLoginLogic extends BaseLogic {
     protected $userEntity;
 
     /**
-     * 待登录的用户信息
-     *
-     * @var YUserModel
-     */
-    protected $user;
-
-    /**
-     * 使用账号
+     * 使用账号信息
      *
      * @param YUserEntity $userEntity 用户实体
      * @return $this
@@ -59,12 +53,18 @@ class UserAccountLoginLogic extends BaseLogic {
      */
     public function login() {
         // 查询用户
-        $user = YUserModel::findOne(AppQuery::make(['account|email' => $this->userEntity->account], 'id,password,password_salt'));
+        $user = YUserModel::findOne(AppQuery::make([
+            'account|email' => $this->userEntity->account,
+        ], 'id,password,password_salt,status'));
+
+        // 判断用户状态
         if (empty($user)) {
             throw new AppException('账号不存在');
+        } else if ($user['status'] === YUserCode::STATUS__DISABLED) {
+            throw new AppException('账号已被禁用');
+        } else if ($user['status'] === YUserCode::STATUS__AUTHING) {
+            throw new AppException('账号正在审核中，请稍后重试');
         }
-
-        // TODO: 用户登录时，需要判断用户账户是否被禁用
 
         // 验证账号密码
         if (!($checkPassword = UserPasswordHandler::check($user['password'], $this->userEntity->password, $user['password_salt']))) {
@@ -73,7 +73,7 @@ class UserAccountLoginLogic extends BaseLogic {
 
         // TODO: 用户登录时，需要登录记录
 
-        $this->user = $user;
+        $this->userEntity = $user->toEntity();
 
         return $this;
     }
@@ -85,7 +85,7 @@ class UserAccountLoginLogic extends BaseLogic {
      * @throws AppException
      */
     public function initSession() {
-        $uid = $this->user->id;
+        $uid = $this->userEntity->id;
         $token = AppSessionHandler::make()->buildToken($uid);
         if (empty($token)) {
             throw new AppException('用户信息初始化失败');

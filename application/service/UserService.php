@@ -10,7 +10,6 @@
 namespace app\service;
 
 use app\exception\AppException;
-use app\extend\common\AppQuery;
 use app\kernel\model\YUserModel;
 
 class UserService {
@@ -19,13 +18,12 @@ class UserService {
      * 获取用户信息
      *
      * @param int $uid 用户uid
-     * @param string $field 查询字段
+     * @param Query|string|null $query 查询器
      * @return YUserModel|null
-     * @throws AppException
      */
-    public static function getUserInfo($uid, $field = '') {
-        $query = AppQuery::make(['id' => $uid], $field);
-        $userInfo = YUserModel::findOne($query);
+    public static function getUserInfo($uid, $query = null) {
+        $query = YUserModel::useQuery($query)->where(['id' => $uid]);
+        $userInfo = $query->find();
         if (empty($userInfo)) {
             throw new AppException('用户信息不存在');
         }
@@ -35,6 +33,25 @@ class UserService {
         }
 
         return $userInfo;
+    }
+
+    /**
+     * 获取用户集合
+     *
+     * @param int $limit 查询数量
+     * @param Query|string|null $query 查询器
+     * @return mixed
+     */
+    public static function getUserCollect($limit = 10, $query = null) {
+        $limit = min(max($limit, 1), 50);
+        $query = YUserModel::useQuery($query);
+        $userCollect = $query->limit($limit)->select();
+
+        if (!empty($userCollect)) {
+            $userCollect->append(['avatar_url'])->hidden(['avatar']);
+        }
+
+        return $userCollect;
     }
 
 }

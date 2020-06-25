@@ -21,4 +21,16 @@ class AppException extends \Exception {
     public function getData() {
         return $this->data;
     }
+
+    /**
+     * 再次抛出异常
+     *
+     * @param string $prefix 错误内容前缀
+     * @throws $this
+     */
+    public function throwAgain($prefix = '') {
+        $prefix = $prefix ? $prefix . '，' : '';
+        throw new static($prefix . $this->message);
+    }
+
 }

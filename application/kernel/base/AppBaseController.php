@@ -24,6 +24,7 @@ abstract class AppBaseController extends Controller {
     public $uid = 0;
 
     public function __construct() {
+        parent::__construct();
         $this->uid = AppSession::make()->getUid();
     }
 

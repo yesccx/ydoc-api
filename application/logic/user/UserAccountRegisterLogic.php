@@ -10,7 +10,7 @@
 namespace app\logic\user;
 
 use app\constants\common\AppHookCode;
-use app\entity\YUserEntity;
+use app\entity\model\YUserEntity;
 use app\exception\AppException;
 use app\extend\common\AppHook;
 use app\kernel\model\YUserModel;
@@ -28,7 +28,7 @@ class UserAccountRegisterLogic extends BaseLogic {
     protected $userEntity;
 
     /**
-     * 使用账号
+     * 使用账号信息
      *
      * @param YUserEntity $userEntity 用户实体
      * @return $this
@@ -64,8 +64,9 @@ class UserAccountRegisterLogic extends BaseLogic {
         if (empty($userInfo)) {
             throw new AppException('用户信息初始化失败');
         }
+        $this->userEntity = $userInfo->toEntity();
 
-        AppHook::listen(AppHookCode::USER_REGISTED, YUserEntity::make($userInfo));
+        AppHook::listen(AppHookCode::USER_REGISTED, $this->userEntity);
 
         return $this;
     }

@@ -9,7 +9,7 @@
 
 namespace app\extend;
 
-use app\entity\YUserEntity;
+use app\entity\model\YUserEntity;
 use app\exception\AppException;
 use app\extend\common\AppQuery;
 use app\kernel\model\YUserModel;

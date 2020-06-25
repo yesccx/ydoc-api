@@ -18,15 +18,19 @@ trait ModelCommon {
     /**
      * 使用Query(AppQuery)
      *
-     * @param Query|array $query
+     * @param Query|array|string $query
      * @return Model
      */
     public static function useQuery($query) {
         /** @var Model */
         $instance = new static;
 
-        if (!($query instanceof Query)) {
+        if (is_array($query)) {
             $query = AppQuery::make($query);
+        } else if (is_string($query)) {
+            $query = AppQuery::make([], $query);
+        } else if (!($query instanceof Query)) {
+            $query = AppQuery::make();
         }
 
         return $instance->setOption('where', $query->getOptions('where'))
@@ -40,9 +44,14 @@ trait ModelCommon {
      * 单个查询
      *
      * @param Query|array $query
+     * @param mixed $field 字段
+     * @param mixed $order 排序
      * @return Model|null
      */
-    public static function findOne($query) {
+    public static function findOne($query, $field = true, $order = '') {
+        if (!($query instanceof Query)) {
+            $query = AppQuery::make($query, $field, $order);
+        }
         return static::useQuery($query)->find();
     }
 

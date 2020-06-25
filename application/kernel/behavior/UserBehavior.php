@@ -9,7 +9,7 @@
 
 namespace app\kernel\behavior;
 
-use app\entity\YUserEntity;
+use app\entity\model\YUserEntity;
 use app\extend\UserAvatar;
 
 class UserBehavior {
