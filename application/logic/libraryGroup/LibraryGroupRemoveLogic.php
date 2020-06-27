@@ -9,52 +9,43 @@
 
 namespace app\logic\libraryGroup;
 
-use app\entity\model\YLibraryGroupEntity;
 use app\exception\AppException;
-use app\extend\common\AppQuery;
 use app\kernel\model\YLibraryGroupModel;
+use app\kernel\validate\library\LibraryGroupValidate;
 use app\logic\extend\BaseLogic;
-use app\service\LibraryGroupService;
 
 class LibraryGroupRemoveLogic extends BaseLogic {
 
     /**
-     * 文档库分组实体信息
+     * 文档库分组id
      *
-     * @var YLibraryGroupEntity
+     * @var int
      */
-    public $libraryGroupEntity;
+    public $libraryGroupId;
 
     /**
      * 使用待删除的分组id
      *
-     * @param int $groupId 文档库分组id
+     * @param int $libraryGroupId 文档库分组id
      * @return $this
      * @throws AppException
      */
-    public function useLibraryGroup($groupId = 0) {
-        if (empty($groupId)) {
-            throw new AppException('文档库分组不存在');
-        }
+    public function useLibraryGroup($libraryGroupId = 0) {
+        LibraryGroupValidate::checkOrException(['id' => $libraryGroupId], 'remove');
 
-        $libraryGroupInfo = LibraryGroupService::getLibraryGroupInfo($groupId, AppQuery::make(['uid' => $this->uid], 'id,uid'));
-        if (empty($libraryGroupInfo)) {
-            throw new AppException('文档库分组不存在');
-        }
-
-        $this->libraryGroupEntity = $libraryGroupInfo->toEntity();
+        $this->libraryGroupId = $libraryGroupId;
 
         return $this;
     }
 
     /**
-     * 删除分组
+     * 删除文档库分组
      *
      * @return $this
      * @throws AppException
      */
     public function remove() {
-        $deleteRes = YLibraryGroupModel::where(['id' => $this->libraryGroupEntity->id])->softDelete();
+        $deleteRes = YLibraryGroupModel::where(['id' => $this->libraryGroupId])->softDelete();
         if (empty($deleteRes)) {
             throw new AppException('删除失败');
         }

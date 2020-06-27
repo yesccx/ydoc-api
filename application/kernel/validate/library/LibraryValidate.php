@@ -9,11 +9,13 @@
 
 namespace app\kernel\validate\library;
 
+use app\kernel\model\YLibraryModel;
 use app\kernel\validate\extend\BaseValidate;
 
 class LibraryValidate extends BaseValidate {
 
     protected $rule = [
+        'id'   => ['checkExistsLibrary'],
         'uid'  => ['require'],
         'name' => ['require', 'length' => '1,32'],
         'desc' => ['max' => 255],
@@ -28,7 +30,22 @@ class LibraryValidate extends BaseValidate {
 
     protected $scene = [
         'create' => ['uid', 'name', 'desc'], // 文档库创建
-        'modify' => ['name', 'desc'], // 文档库修改
+        'modify' => ['id', 'name', 'desc'], // 文档库修改
+        'remove' => ['id'], // 文档库删除
     ];
+
+    /**
+     * 验证文档库是否存在
+     *
+     * @param int $libraryId 文档库id
+     * @return boolean|string
+     */
+    protected function checkExistsLibrary($libraryId) {
+        if (empty($libraryId) || !YLibraryModel::existsOne(['id' => $libraryId])) {
+            return '文档库不存在';
+        }
+
+        return true;
+    }
 
 }

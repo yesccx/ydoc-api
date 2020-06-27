@@ -16,7 +16,7 @@ use app\exception\AppException;
 use app\extend\common\AppHook;
 use app\kernel\model\YLibraryMemberModel;
 use app\logic\extend\BaseLogic;
-use app\service\LibraryService;
+use app\service\library\LibraryService;
 
 class LibraryMemberUninviteLogic extends BaseLogic {
 

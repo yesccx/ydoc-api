@@ -11,10 +11,10 @@ use think\facade\Route;
 
 Route::group('v1/library/manager', function () {
     Route::post('info', 'libraryManagerInfo');
-    Route::post('library-member/group-modify', 'libraryMemberGroupModify');
+    Route::post('library-member/library-sort', 'libraryMemberLibrarySort');
     Route::post('library-member/status-modify', 'libraryMemberStatusModify');
     Route::post('library-member/role-modify', 'libraryMemberRoleModify');
-    Route::post('library-member/collect', 'libraryMemberCollect');
+    Route::post('library-member/collection', 'libraryMemberCollection');
     Route::post('library-member/invite', 'libraryMemberInvite');
     Route::post('library-member/uninvite', 'libraryMemberUninvite');
 })->prefix('v1.library.LibraryManager/')->middleware('AppSessionMiddleware');

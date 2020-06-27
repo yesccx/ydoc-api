@@ -19,7 +19,7 @@ use app\logic\library\LibraryCreateLogic;
 use app\logic\library\LibraryModifyLogic;
 use app\logic\library\LibraryRemoveLogic;
 use app\logic\library\LibraryTransferLogic;
-use app\service\LibraryService;
+use app\service\library\LibraryService;
 use think\Db;
 
 class LibraryCenterController extends AppBaseController {
@@ -73,7 +73,7 @@ class LibraryCenterController extends AppBaseController {
     /**
      * 文档库集合
      */
-    public function libraryCollect() {
+    public function libraryCollection() {
         $searchKey = $this->input('search_key/s', '');
 
         // 查询条件
@@ -84,31 +84,30 @@ class LibraryCenterController extends AppBaseController {
 
         // 获取列表数据
         $query->field('id,library_id,library_name,group_id,uid')->order('id', 'desc');
-        $collect = LibraryService::getMemberLibraryCollect($this->uid, $query);
+        $collection = LibraryService::getMemberLibraryCollection($this->uid, $query);
 
         // 追加文档库信息
-        if (!empty($collect)) {
-            $collect->load(['library_info' => function ($squery) {
+        if (!empty($collection)) {
+            $collection->load(['library_info' => function ($squery) {
                 $squery->field('id,uid,team_id,name,desc,sort,create_time');
             }]);
         }
 
-        return $this->responseData($collect);
+        return $this->responseData($collection);
     }
 
     /**
      * 文档库创建
      */
     public function libraryCreate() {
-        $groupId = $this->input('group_id/d', 0);
-        $libraryInfo = $this->inputMany(['name/s' => '', 'desc/s' => '']);
+        $libraryGroupId = $this->input('group_id/d', 0);
 
-        $libraryEntity = YLibraryEntity::make($libraryInfo);
+        $libraryEntity = YLibraryEntity::inputMake(['name/s' => '', 'desc/s' => '']);
         $libraryEntity->uid = $this->uid;
 
         $libraryCreate = LibraryCreateLogic::make();
-        Db::transaction(function () use ($libraryCreate, $libraryEntity, $groupId) {
-            $libraryCreate->useLibrary($libraryEntity)->create()->initLibraryMember($groupId);
+        Db::transaction(function () use ($libraryCreate, $libraryEntity, $libraryGroupId) {
+            $libraryCreate->useLibrary($libraryEntity)->create()->initLibraryMember($libraryGroupId);
         });
 
         return $this->responseData($libraryCreate->libraryEntity->toArray());
@@ -120,8 +119,7 @@ class LibraryCenterController extends AppBaseController {
     public function libraryModify() {
         LibraryMemberOperate::checkOperate(LibraryMemberOperateCode::LIBRARY__MODIFY);
 
-        $libraryInfo = $this->inputMany(['name/s' => '', 'desc/s' => '']);
-        $libraryEntity = YLibraryEntity::make($libraryInfo);
+        $libraryEntity = YLibraryEntity::inputMake(['name/s' => '', 'desc/s' => '']);
         $libraryEntity->id = $this->request->libraryId;
 
         $libraryModify = LibraryModifyLogic::make();

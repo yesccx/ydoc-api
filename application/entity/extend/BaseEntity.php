@@ -9,6 +9,7 @@
 
 namespace app\entity\extend;
 
+use app\extend\common\AppRequest;
 use app\utils\Arr;
 
 abstract class BaseEntity {
@@ -59,6 +60,17 @@ abstract class BaseEntity {
     }
 
     /**
+     * 从请求上下文中接收参数并初始化
+     *
+     * @param array $entityData 实体数据
+     * @return static
+     */
+    public static function inputMake($fields, $type = 'post') {
+        $data = AppRequest::inputMany($fields, $type);
+        return static::make($data);
+    }
+
+    /**
      * 获取字段
      *
      * @param string $field 字段名
@@ -66,13 +78,13 @@ abstract class BaseEntity {
      * @return mixed
      */
     public function getField($field, $default = '') {
-        $fieldCollect = explode('.', is_int($field) ? (string) $field : $field);
-        if (empty($fieldCollect)) {
+        $fieldCollection = explode('.', is_int($field) ? (string) $field : $field);
+        if (empty($fieldCollection)) {
             return $default;
         }
 
         $entityData = $this->entityData;
-        if (!is_null($segment = array_shift($fieldCollect))) {
+        if (!is_null($segment = array_shift($fieldCollection))) {
             if (Arr::accessible($entityData) && Arr::exists($entityData, $segment)) {
                 $entityData = $entityData[$segment];
             } else if (is_object($entityData) && isset($entityData->{$segment})) {

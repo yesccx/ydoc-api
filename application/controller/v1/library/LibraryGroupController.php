@@ -14,7 +14,7 @@ use app\kernel\base\AppBaseController;
 use app\logic\libraryGroup\LibraryGroupCreateLogic;
 use app\logic\libraryGroup\LibraryGroupModifyLogic;
 use app\logic\libraryGroup\LibraryGroupRemoveLogic;
-use app\service\LibraryGroupService;
+use app\service\library\LibraryGroupService;
 use think\Db;
 
 class LibraryGroupController extends AppBaseController {
@@ -22,7 +22,7 @@ class LibraryGroupController extends AppBaseController {
     protected $middleware = [
         \app\kernel\middleware\library\LibraryGroupAuthMiddleware::class => [ // 文档库分组操作鉴权
             'only' => [
-                'groupInfo', 'groupRemove', 'groupModify', 'groupSort',
+                'libraryGroupInfo', 'libraryGroupRemove', 'libraryGroupModify', 'libraryGroupSort',
             ],
         ],
     ];
@@ -30,15 +30,15 @@ class LibraryGroupController extends AppBaseController {
     /**
      * 获取用户文档库分组集合
      */
-    public function groupCollect() {
-        $collect = LibraryGroupService::getLibraryGroupCollect($this->uid, 'id,name,desc,sort');
-        return $this->responseData($collect);
+    public function libraryGroupCollection() {
+        $collection = LibraryGroupService::getLibraryGroupCollection($this->uid, 'id,name,desc,sort');
+        return $this->responseData($collection);
     }
 
     /**
      * 获取文档库分组信息
      */
-    public function groupInfo() {
+    public function libraryGroupInfo() {
         $groupId = $this->request->libraryGroupId;
         $groupInfo = LibraryGroupService::getLibraryGroupInfo($groupId, 'id,uid,name,desc,sort,create_time');
         return $this->responseData($groupInfo->toArray());
@@ -47,30 +47,28 @@ class LibraryGroupController extends AppBaseController {
     /**
      * 创建文档库分组
      */
-    public function groupCreate() {
-        $groupInfo = $this->inputMany(['name/s' => '', 'desc/s' => '', 'sort/d' => 0]);
-
+    public function libraryGroupCreate() {
         // 准备文档库分组实体信息
-        $groupEntity = YLibraryGroupEntity::make($groupInfo);
+        $groupEntity = YLibraryGroupEntity::inputMake(['name/s' => '', 'desc/s' => '', 'sort/d' => 0]);
         $groupEntity->uid = $this->uid;
 
         $groupCreate = LibraryGroupCreateLogic::make();
         Db::transaction(function () use ($groupCreate, $groupEntity) {
-            $groupCreate->useGroup($groupEntity)->create();
+            $groupCreate->useLibraryGroup($groupEntity)->create();
         });
 
-        return $this->responseData($groupCreate->groupEntity->toArray());
+        return $this->responseData($groupCreate->libraryGroupEntity->toArray());
     }
 
     /**
      * 删除文档库分组
      */
-    public function groupRemove() {
-        $groupId = $this->request->libraryGroupId;
+    public function libraryGroupRemove() {
+        $libraryGroupId = $this->request->libraryGroupId;
 
         $groupRemove = LibraryGroupRemoveLogic::make();
-        Db::transaction(function () use ($groupRemove, $groupId) {
-            $groupRemove->useLibraryGroup($groupId)->remove();
+        Db::transaction(function () use ($groupRemove, $libraryGroupId) {
+            $groupRemove->useLibraryGroup($libraryGroupId)->remove();
         });
 
         return $this->responseSuccess('删除成功');
@@ -79,25 +77,23 @@ class LibraryGroupController extends AppBaseController {
     /**
      * 修改文档库分组
      */
-    public function groupModify() {
-        $groupInfo = $this->inputMany(['name/s' => '', 'desc/s' => '', 'sort/f' => 0]);
-
+    public function libraryGroupModify() {
         // 准备待修改的文档库分组信息
-        $groupEntity = YLibraryGroupEntity::make($groupInfo);
+        $groupEntity = YLibraryGroupEntity::inputMake(['name/s' => '', 'desc/s' => '', 'sort/f' => 0]);
         $groupEntity->id = $this->request->libraryGroupId;
 
         $groupModify = LibraryGroupModifyLogic::make();
         Db::transaction(function () use ($groupModify, $groupEntity) {
-            $groupModify->useGroup($groupEntity)->modify();
+            $groupModify->useLibraryGroup($groupEntity)->modify();
         });
 
-        return $this->responseData($groupModify->groupEntity->toArray());
+        return $this->responseData($groupModify->libraryGroupEntity->toArray());
     }
 
     /**
      * 排序文档库分组
      */
-    public function groupSort() {
+    public function libraryGroupSort() {
         $sort = $this->input('sort/f', 0);
 
         $sortRes = LibraryGroupService::modifyLibraryGroupSort($this->request->libraryGroupId, $sort);

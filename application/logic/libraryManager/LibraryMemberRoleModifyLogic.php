@@ -14,16 +14,16 @@ use app\entity\model\YLibraryMemberEntity;
 use app\exception\AppException;
 use app\kernel\model\YLibraryMemberModel;
 use app\logic\extend\BaseLogic;
-use app\service\LibraryService;
+use app\service\library\LibraryService;
 
 class LibraryMemberRoleModifyLogic extends BaseLogic {
 
     /**
-     * 成员角色
+     * 文档库成员角色
      *
      * @var int
      */
-    protected $memberRole;
+    protected $libraryMemberRole;
 
     /**
      * 文档库成员实体信息
@@ -55,18 +55,18 @@ class LibraryMemberRoleModifyLogic extends BaseLogic {
     }
 
     /**
-     * 指定成员角色
+     * 指定文档库成员角色
      *
-     * @param int $roleId 角色id
+     * @param int $libraryRoleId 文档库成员角色id
      * @return $this
      * @throws AppException
      */
-    public function useMemberRole($roleId) {
-        if (!YLibraryMemberCode::make('urole')->has($roleId)) {
+    public function useLibraryMemberRole($libraryRoleId) {
+        if (!YLibraryMemberCode::make('urole')->has($libraryRoleId)) {
             throw new AppException('无效的角色值');
         }
 
-        $this->memberRole = $roleId;
+        $this->libraryMemberRole = $libraryRoleId;
 
         return $this;
     }
@@ -78,11 +78,13 @@ class LibraryMemberRoleModifyLogic extends BaseLogic {
      * @throws AppException
      */
     public function modify() {
-        if (is_null($this->memberRole)) {
+        if (is_null($this->libraryMemberRole)) {
             throw new AppException('请指定一个角色值');
         }
 
-        $updateRes = YLibraryMemberModel::update(['urole' => $this->memberRole, 'update_time' => time()], ['id' => $this->libraryMemberEntity->id]);
+        $updateRes = YLibraryMemberModel::update([
+            'urole' => $this->libraryMemberRole, 'update_time' => time(),
+        ], ['id' => $this->libraryMemberEntity->id]);
         if (empty($updateRes)) {
             throw new AppException('修改失败');
         }

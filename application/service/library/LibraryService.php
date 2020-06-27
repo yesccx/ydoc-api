@@ -1,6 +1,13 @@
 <?php
 
-namespace app\service;
+/*
+ * 文档库相关 Service
+ *
+ * @Created: 2020-06-20 14:35:22
+ * @Author: yesc (yes.ccx@gmail.com)
+ */
+
+namespace app\service\library;
 
 use app\extend\common\AppPagination;
 use app\kernel\model\YLibraryMemberModel;
@@ -29,7 +36,7 @@ class LibraryService {
      * @param Query|string|null $query 查询器
      * @return mixed
      */
-    public static function getMemberLibraryCollect($uid, $query = null) {
+    public static function getMemberLibraryCollection($uid, $query = null) {
         $query = YLibraryMemberModel::useQuery($query)->where(['uid' => $uid]);
         return $query->select();
     }

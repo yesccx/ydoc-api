@@ -7,7 +7,7 @@
  * @Author: yesc (yes.ccx@gmail.com)
  */
 
-namespace app\service;
+namespace app\service\library;
 
 use app\kernel\model\YLibraryMemberModel;
 
@@ -18,12 +18,12 @@ class LibraryManagerService {
      *
      * @param int $libraryId 文档库id
      * @param int $memberId 用户uid
-     * @param int $groupId 文档库分组id
+     * @param int $libraryGroupId 文档库分组id
      * @param int $sort 成员文档库排序值
      * @return YLibraryMemberModel|null
      */
-    public static function modifyLibraryMemberGroup($libraryId, $memberId, $groupId = 0, $sort = -1) {
-        $data = ['group_id' => $groupId, 'update_time' => time()];
+    public static function modifyLibraryMemberGroup($libraryId, $memberId, $libraryGroupId = 0, $sort = -1) {
+        $data = ['group_id' => $libraryGroupId, 'update_time' => time()];
         if ($sort >= 0) {
             $data['sort'] = $sort;
         }
@@ -37,18 +37,18 @@ class LibraryManagerService {
      * @param Query|string|null $query 查询器
      * @return mixed
      */
-    public static function getLibraryMemberCollect($libraryId, $query = null) {
+    public static function getLibraryMemberCollection($libraryId, $query = null) {
         $query = YLibraryMemberModel::useQuery($query)->where(['library_id' => $libraryId]);
-        $memberCollect = $query->select();
+        $memberCollection = $query->select();
 
         // 追加用户信息
-        if (!empty($memberCollect)) {
-            $memberCollect = $memberCollect->load(['user_info' => function ($squery) {
+        if (!empty($memberCollection)) {
+            $memberCollection = $memberCollection->load(['user_info' => function ($squery) {
                 $squery->field('id,nickname,avatar');
             }])->append(['user_info.avatar_url'])->toArray();
         }
 
-        return $memberCollect;
+        return $memberCollection;
     }
 
 }

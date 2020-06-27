@@ -18,57 +18,63 @@ use app\logic\extend\BaseLogic;
 class LibraryGroupCreateLogic extends BaseLogic {
 
     /**
-     * 分组实体信息
+     * 文档库分组实体信息
      *
      * @var YLibraryGroupEntity
      */
-    public $groupEntity;
+    public $libraryGroupEntity;
 
     /**
-     * 使用分组信息
+     * 使用文档库分组信息
      *
-     * @param YLibraryGroupEntity $groupEntity
+     * @param YLibraryGroupEntity $libraryGroupEntity
      * @return $this
      * @throws AppException
      */
-    public function useGroup(YLibraryGroupEntity $groupEntity) {
+    public function useLibraryGroup(YLibraryGroupEntity $libraryGroupEntity) {
         // 校验数据合法性
-        LibraryGroupValidate::checkOrException($groupEntity->toArray(), 'create');
+        LibraryGroupValidate::checkOrException($libraryGroupEntity->toArray(), 'create');
 
         // 计算新分组排序位置
-        $groupEntity->sort = $this->computeGroupSort();
+        if (!$libraryGroupEntity->hasFields('sort') || $libraryGroupEntity->sort < 0) {
+            $libraryGroupEntity->sort = $this->computeGroupSort();
+        }
 
-        $this->groupEntity = $groupEntity;
+        $this->libraryGroupEntity = $libraryGroupEntity;
 
         return $this;
     }
 
     /**
      * 计算分组排序
-     * PS: 取至文档库未尾分组排序值 + 10000
+     * PS: 取至文档库未尾分组排序值 + 步长
      *
+     * @param int $step 默认间隔步长
      * @return int sort
      */
-    protected function computeGroupSort() {
+    protected function computeGroupSort($step = 10000) {
         $lastGroup = YLibraryGroupModel::findOne(['uid' => $this->uid], 'sort', 'sort desc');
-        $lastGroupSort = !empty($lastGroup) ? intval($lastGroup['sort'] + 10000) : 0;
-        $targetSort = empty($lastGroup) ? 10000 : $lastGroupSort;
+        $lastGroupSort = !empty($lastGroup) ? intval($lastGroup['sort'] + $step) : 0;
+        $targetSort = empty($lastGroup) ? $step : $lastGroupSort;
 
         return $targetSort;
     }
 
     /**
-     * 创建分组
+     * 创建文档库分组
      *
      * @return $this
      * @throws AppException
      */
     public function create() {
-        if (empty($group = YLibraryGroupModel::create($this->groupEntity->toArray()))) {
+        if (empty($group = YLibraryGroupModel::create(
+            $this->libraryGroupEntity->toArray(),
+            'uid,name,desc,sort,create_time,update_time'
+        ))) {
             throw new AppException('文档库分组创建失败');
         }
 
-        $this->groupEntity = $group->toEntity();
+        $this->libraryGroupEntity = $group->toEntity();
 
         return $this;
     }

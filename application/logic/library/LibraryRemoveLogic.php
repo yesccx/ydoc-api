@@ -13,6 +13,7 @@ use app\constants\common\AppHookCode;
 use app\exception\AppException;
 use app\extend\common\AppHook;
 use app\kernel\model\YLibraryModel;
+use app\kernel\validate\library\LibraryValidate;
 use app\logic\extend\BaseLogic;
 use app\service\UserService;
 use app\utils\user\UserPasswordHandler;
@@ -40,6 +41,8 @@ class LibraryRemoveLogic extends BaseLogic {
      * @return $this
      */
     public function useLibrary($libraryId) {
+        LibraryValidate::checkOrException(['id' => $libraryId], 'remove');
+
         $this->libraryId = $libraryId;
 
         return $this;

@@ -12,7 +12,7 @@ use think\facade\Route;
 Route::group('v1/library/center', function () {
     Route::post('info', 'libraryInfo');
     Route::post('list', 'libraryList');
-    Route::post('collect', 'libraryCollect');
+    Route::post('collection', 'libraryCollection');
     Route::post('info', 'libraryInfo');
     Route::post('create', 'libraryCreate');
     Route::post('modify', 'libraryModify');

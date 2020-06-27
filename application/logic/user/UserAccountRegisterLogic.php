@@ -60,7 +60,10 @@ class UserAccountRegisterLogic extends BaseLogic {
         $userEntity->password_salt = UserPasswordHandler::generateSalt($userEntity->account);
 
         // 创建用户
-        $userInfo = YUserModel::create($userEntity->toArray());
+        $userInfo = YUserModel::create(
+            $userEntity->toArray(),
+            'account,password,password_salt,avatar,email,nickname,status,create_time'
+        );
         if (empty($userInfo)) {
             throw new AppException('用户信息初始化失败');
         }

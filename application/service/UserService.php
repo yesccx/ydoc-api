@@ -42,16 +42,16 @@ class UserService {
      * @param Query|string|null $query 查询器
      * @return mixed
      */
-    public static function getUserCollect($limit = 10, $query = null) {
+    public static function getUserCollection($limit = 10, $query = null) {
         $limit = min(max($limit, 1), 50);
         $query = YUserModel::useQuery($query);
-        $userCollect = $query->limit($limit)->select();
+        $userCollection = $query->limit($limit)->select();
 
-        if (!empty($userCollect)) {
-            $userCollect->append(['avatar_url'])->hidden(['avatar']);
+        if (!empty($userCollection)) {
+            $userCollection->append(['avatar_url'])->hidden(['avatar']);
         }
 
-        return $userCollect;
+        return $userCollection;
     }
 
 }

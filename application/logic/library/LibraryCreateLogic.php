@@ -14,7 +14,6 @@ use app\constants\model\YLibraryMemberCode;
 use app\entity\model\YLibraryEntity;
 use app\exception\AppException;
 use app\extend\common\AppHook;
-use app\extend\UserAvatar;
 use app\kernel\model\YLibraryModel;
 use app\kernel\validate\library\LibraryValidate;
 use app\logic\extend\BaseLogic;
@@ -42,7 +41,6 @@ class LibraryCreateLogic extends BaseLogic {
 
         $this->libraryEntity = $libraryEntity;
 
-
         return $this;
     }
 
@@ -53,7 +51,10 @@ class LibraryCreateLogic extends BaseLogic {
      * @throws AppException
      */
     public function create() {
-        $libraryInfo = YLibraryModel::create($this->libraryEntity->toArray());
+        $libraryInfo = YLibraryModel::create(
+            $this->libraryEntity->toArray(),
+            'uid,team_id,name,desc,cover,sort,status,create_time,update_time'
+        );
         if (empty($libraryInfo)) {
             throw new AppException('文档库创建失败');
         }
@@ -68,16 +69,16 @@ class LibraryCreateLogic extends BaseLogic {
     /**
      * 初始化文档库成员
      *
-     * @param int $groupId 文档库分组id
+     * @param int $libraryGroupId 文档库分组id
      * @return $this
      * @throws AppException
      */
-    public function initLibraryMember($groupId = 0) {
+    public function initLibraryMember($libraryGroupId = 0) {
         // 将创建人加入文档库
         try {
             LibraryMemberInviteLogic::make()
                 ->useLibraryMember($this->libraryEntity->uid, $this->libraryEntity->id)
-                ->useOption(YLibraryMemberCode::ROLE__CREATOR, $groupId)
+                ->useOption(YLibraryMemberCode::ROLE__CREATOR, $libraryGroupId)
                 ->invite();
         } catch (AppException $e) {
             $e->throwAgain('邀请用户成为文档库成员失败');

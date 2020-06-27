@@ -12,7 +12,7 @@ namespace app\kernel\middleware\library;
 use app\extend\common\AppQuery;
 use app\extend\common\AppRequest;
 use app\extend\common\AppResponse;
-use app\service\LibraryGroupService;
+use app\service\library\LibraryGroupService;
 use think\Request;
 
 class LibraryGroupAuthMiddleware {

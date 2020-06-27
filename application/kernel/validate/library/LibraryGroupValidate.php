@@ -9,11 +9,13 @@
 
 namespace app\kernel\validate\library;
 
+use app\kernel\model\YLibraryGroupModel;
 use app\kernel\validate\extend\BaseValidate;
 
 class LibraryGroupValidate extends BaseValidate {
 
     protected $rule = [
+        'id'   => ['checkExistsLibraryGroup'],
         'uid'  => ['require'],
         'name' => ['require', 'length' => '1,32'],
         'desc' => ['max' => 255],
@@ -28,7 +30,22 @@ class LibraryGroupValidate extends BaseValidate {
 
     protected $scene = [
         'create' => ['uid', 'name', 'desc'], // 文档库分组创建
-        'modify' => ['name', 'desc'], // 文档库分组修改
+        'modify' => ['id', 'name', 'desc'], // 文档库分组修改
+        'remove' => ['id'], // 文档库分组删除
     ];
+
+    /**
+     * 验证文档库分组是否存在
+     *
+     * @param int $groupId 文档库分组id
+     * @return boolean|string
+     */
+    protected function checkExistsLibraryGroup($groupId) {
+        if (empty($groupId) || !YLibraryGroupModel::existsOne(['id' => $groupId])) {
+            return '文档库分组不存在';
+        }
+
+        return true;
+    }
 
 }

@@ -37,4 +37,28 @@ class LibraryMemberOperateCode extends BaseCode {
     // 文档库删除
     const LIBRARY__REMOVE = 'library__remove';
 
+    // 文档分组创建
+    const LIBRARY_DOC_GROUP__CREATE = 'library_doc_group__create';
+
+    // 文档分组修改
+    const LIBRARY_DOC_GROUP__MODIFY = 'library_doc_group__modify';
+
+    // 文档分组删除
+    const LIBRARY_DOC_GROUP__REMOVE = 'library_doc_group__remove';
+
+    // 文档分组排序
+    const LIBRARY_DOC_GROUP__SORT = 'library_doc_group__sort';
+
+    // 文档创建
+    const LIBRARY_DOC__CREATE = 'library_doc__create';
+
+    // 文档修改
+    const LIBRARY_DOC__MODIFY = 'library_doc__modify';
+
+    // 文档删除
+    const LIBRARY_DOC__REMOVE = 'library_doc__remove';
+
+    // 文档排序
+    const LIBRARY_DOC__SORT = 'library_doc__sort';
+
 }

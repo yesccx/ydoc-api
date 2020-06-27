@@ -16,7 +16,7 @@ use app\exception\AppException;
 use app\kernel\model\YLibraryMemberModel;
 use app\kernel\model\YLibraryModel;
 use app\logic\extend\BaseLogic;
-use app\service\LibraryService;
+use app\service\library\LibraryService;
 use app\service\UserService;
 use app\utils\user\UserPasswordHandler;
 

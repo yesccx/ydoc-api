@@ -12,13 +12,13 @@ namespace app\controller\v1\library;
 use app\constants\module\LibraryMemberOperateCode;
 use app\extend\library\LibraryMemberOperate;
 use app\kernel\base\AppBaseController;
-use app\logic\libraryManager\LibraryMemberGroupModifyLogic;
+use app\logic\libraryManager\LibraryMemberLibrarySortLogic;
 use app\logic\libraryManager\LibraryMemberInviteLogic;
 use app\logic\libraryManager\LibraryMemberRoleModifyLogic;
 use app\logic\libraryManager\LibraryMemberStatusModifyLogic;
 use app\logic\libraryManager\LibraryMemberUninviteLogic;
-use app\service\LibraryManagerService;
-use app\service\LibraryService;
+use app\service\library\LibraryManagerService;
+use app\service\library\LibraryService;
 use think\Db;
 
 class LibraryManagerController extends AppBaseController {
@@ -26,8 +26,8 @@ class LibraryManagerController extends AppBaseController {
     protected $middleware = [
         \app\kernel\middleware\library\LibraryAuthMiddleware::class => [ // 文档库操作鉴权
             'only' => [
-                'libraryManagerInfo', 'libraryMemberGroupModify', 'libraryMemberCollect', 'libraryMemberSort',
-                'libraryMemberInvite', 'libraryMemberStatusModify', 'libraryMemberRoleModify', 'libraryMemberUninvite'
+                'libraryManagerInfo', 'libraryMemberLibrarySort', 'libraryMemberCollection', 'libraryMemberSort',
+                'libraryMemberInvite', 'libraryMemberStatusModify', 'libraryMemberRoleModify', 'libraryMemberUninvite',
             ],
         ],
     ];
@@ -48,19 +48,19 @@ class LibraryManagerController extends AppBaseController {
     }
 
     /**
-     * 成员文档库分组修改
+     * 成员文档库排序
      */
-    public function libraryMemberGroupModify() {
+    public function libraryMemberLibrarySort() {
         $libraryId = $this->request->libraryId;
-        $groupId = $this->input('library_group_id/d', 0);
+        $libraryGroupId = $this->input('library_group_id/d', 0);
         $sort = $this->input('sort/f', -1);
-        if ($groupId < 0) {
+        if ($libraryGroupId < 0) {
             return $this->responseError('参数错误');
         }
 
-        $memberGroupModify = LibraryMemberGroupModifyLogic::make();
-        Db::transaction(function () use ($memberGroupModify, $libraryId, $groupId, $sort) {
-            $memberGroupModify->useLibraryMember($this->uid, $libraryId)->useLibraryGroup($groupId, $sort)->modify();
+        $memberLibrarySort = LibraryMemberLibrarySortLogic::make();
+        Db::transaction(function () use ($memberLibrarySort, $libraryId, $libraryGroupId, $sort) {
+            $memberLibrarySort->useLibraryMember($this->uid, $libraryId)->useLibraryGroup($libraryGroupId, $sort)->sort();
         });
 
         return $this->responseSuccess('修改成功');
@@ -69,11 +69,11 @@ class LibraryManagerController extends AppBaseController {
     /**
      * 文档库成员集合
      */
-    public function libraryMemberCollect() {
-        $collect = LibraryManagerService::getLibraryMemberCollect(
+    public function libraryMemberCollection() {
+        $collection = LibraryManagerService::getLibraryMemberCollection(
             $this->request->libraryId, 'id,library_id,uid,urole,status,apply_time,create_time,update_time'
         );
-        return $this->responseData($collect);
+        return $this->responseData($collection);
     }
 
     /**
@@ -148,14 +148,14 @@ class LibraryManagerController extends AppBaseController {
 
         $libraryId = $this->request->libraryId;
         $memberId = $this->input('member_id/d', 0);
-        $roleId = $this->input('role_id/d', 0);
-        if ($memberId <= 0 || $roleId <= 0) {
+        $libraryRoleId = $this->input('library_role_id/d', 0);
+        if ($memberId <= 0 || $libraryRoleId <= 0) {
             return $this->responseError('参数错误');
         }
 
         $memberRoleModify = LibraryMemberRoleModifyLogic::make();
-        Db::transaction(function () use ($memberRoleModify, $libraryId, $memberId, $roleId) {
-            $memberRoleModify->useLibraryMember($memberId, $libraryId)->useMemberRole($roleId)->modify();
+        Db::transaction(function () use ($memberRoleModify, $libraryId, $memberId, $libraryRoleId) {
+            $memberRoleModify->useLibraryMember($memberId, $libraryId)->useLibraryMemberRole($libraryRoleId)->modify();
         });
 
         return $this->responseSuccess('修改成功');

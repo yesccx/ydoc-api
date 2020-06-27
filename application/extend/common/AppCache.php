@@ -60,17 +60,17 @@ class AppCache {
     /**
      * 处理key（附加tag前缀）
      *
-     * @param string|array $keyCollect
+     * @param string|array $keyCollection
      * @return string|array
      */
-    protected function handleKey($keyCollect) {
+    protected function handleKey($keyCollection) {
         $tagName = $this->tagName;
-        if (is_array($keyCollect)) {
+        if (is_array($keyCollection)) {
             return array_map(function ($key) use ($tagName) {
                 return "{$tagName}@{$key}";
-            }, $keyCollect);
+            }, $keyCollection);
         } else {
-            return "{$tagName}@{$keyCollect}";
+            return "{$tagName}@{$keyCollection}";
         }
     }
 

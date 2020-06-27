@@ -10,12 +10,12 @@
 use think\facade\Route;
 
 Route::group('v1/library/group', function () {
-    Route::post('collect', 'groupCollect');
-    Route::post('info', 'groupInfo');
-    Route::post('create', 'groupCreate');
-    Route::post('remove', 'groupRemove');
-    Route::post('modify', 'groupModify');
-    Route::post('sort', 'groupSort');
+    Route::post('collection', 'libraryGroupCollection');
+    Route::post('info', 'libraryGroupInfo');
+    Route::post('create', 'libraryGroupCreate');
+    Route::post('remove', 'libraryGroupRemove');
+    Route::post('modify', 'libraryGroupModify');
+    Route::post('sort', 'libraryGroupSort');
 })->prefix('v1.library.LibraryGroup/')->middleware('AppSessionMiddleware');
 
 return [];

@@ -18,8 +18,8 @@ use app\exception\AppException;
 use app\extend\common\AppHook;
 use app\kernel\model\YLibraryMemberModel;
 use app\logic\extend\BaseLogic;
-use app\service\LibraryGroupService;
-use app\service\LibraryService;
+use app\service\library\LibraryGroupService;
+use app\service\library\LibraryService;
 use app\service\UserService;
 
 class LibraryMemberInviteLogic extends BaseLogic {
@@ -86,19 +86,19 @@ class LibraryMemberInviteLogic extends BaseLogic {
     /**
      * 指定文档库成员初始信息
      *
-     * @param integer $urole 成员角色
-     * @param integer $groupId 文档库分组
+     * @param int $urole 成员角色
+     * @param int $libraryGroupId 文档库分组
      * @param string $libraryAlias 文档库别名
      * @return $this
      * @throws AppException
      */
-    public function useOption($urole = 0, $groupId = 0, $libraryAlias = '') {
+    public function useOption($urole = 0, $libraryGroupId = 0, $libraryAlias = '') {
         if (!empty($urole) && YLibraryMemberCode::make('urole')->has($urole)) {
             $this->libraryMemberEntity->urole = $urole;
         }
 
-        if (!empty($groupId) && !empty(LibraryGroupService::existsLibraryGroup($groupId, ['uid' => $this->userEntity->id]))) {
-            $this->libraryMemberEntity->group_id = $groupId;
+        if (!empty($libraryGroupId) && !empty(LibraryGroupService::existsLibraryGroup($libraryGroupId, ['uid' => $this->userEntity->id]))) {
+            $this->libraryMemberEntity->group_id = $libraryGroupId;
         }
 
         if (!empty($libraryAlias)) {
@@ -119,7 +119,10 @@ class LibraryMemberInviteLogic extends BaseLogic {
         $libraryMemberEntity->apply_time = time();
         $libraryMemberEntity->status = YLibraryMemberCode::STATUS__ENABLED;
 
-        $libraryMemberInfo = YLibraryMemberModel::create($libraryMemberEntity->toArray());
+        $libraryMemberInfo = YLibraryMemberModel::create(
+            $libraryMemberEntity->toArray(),
+            'library_id,library_name,library_alias,group_id,sort,uid,urole,status,apply_time,create_time,update_time'
+        );
         if (empty($libraryMemberInfo)) {
             throw new AppException('邀请用户失败');
         }

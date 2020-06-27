@@ -18,7 +18,7 @@ class ToolsController extends AppBaseController {
     /**
      * 获取用户集合
      */
-    public function memberCollect() {
+    public function memberCollection() {
         $limit = $this->input('limit/d', 10);
         $searchKey = $this->input('search_key/s', '');
 
@@ -29,9 +29,9 @@ class ToolsController extends AppBaseController {
                 $squery->whereLike('account', "%{$searchKey}%");
             });
 
-        $userCollect = UserService::getUserCollect($limit, $query);
+        $userCollection = UserService::getUserCollection($limit, $query);
 
-        return $this->responseData($userCollect);
+        return $this->responseData($userCollection);
     }
 
 }

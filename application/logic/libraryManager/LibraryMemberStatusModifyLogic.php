@@ -14,7 +14,7 @@ use app\entity\model\YLibraryMemberEntity;
 use app\exception\AppException;
 use app\kernel\model\YLibraryMemberModel;
 use app\logic\extend\BaseLogic;
-use app\service\LibraryService;
+use app\service\library\LibraryService;
 
 class LibraryMemberStatusModifyLogic extends BaseLogic {
 

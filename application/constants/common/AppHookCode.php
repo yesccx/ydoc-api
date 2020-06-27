@@ -34,4 +34,7 @@ class AppHookCode extends BaseCode {
     // 文档库成员移除后
     const LIBRARY_MEMBER_UNINVITE = 'library_member_uninvited';
 
+    // 文档创建成功后
+    const LIBRARY_DOC_CREATED = 'library_doc_created';
+
 }

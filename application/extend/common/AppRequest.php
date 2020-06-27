@@ -34,8 +34,8 @@ class AppRequest {
      */
     public static function inputMany($fields, $type = 'post') {
         // 提取字段类型
-        $fieldTypeCollect = [];
-        $fieldCollect = [];
+        $fieldTypeCollection = [];
+        $fieldCollection = [];
         foreach ($fields as $field => $fieldDefault) {
             $fieldInfo = explode('/', $field);
             $field = $fieldInfo[0] ?? '';
@@ -43,20 +43,20 @@ class AppRequest {
 
             if (!$field) {continue;}
 
-            $fieldCollect[$field] = $fieldDefault;
-            $fieldTypeCollect[$field] = $fieldType;
+            $fieldCollection[$field] = $fieldDefault;
+            $fieldTypeCollection[$field] = $fieldType;
         }
 
         // 获取字段值
-        $fieldCollect = request()->only($fieldCollect, $type);
+        $fieldCollection = request()->only($fieldCollection, $type);
 
         // 转换类型
-        foreach ($fieldCollect as $field => &$value) {
-            if (isset($fieldTypeCollect[$field])) {
-                $value = self::valueTypeCast($value, $fieldTypeCollect[$field]);
+        foreach ($fieldCollection as $field => &$value) {
+            if (isset($fieldTypeCollection[$field])) {
+                $value = self::valueTypeCast($value, $fieldTypeCollection[$field]);
             }
         }
-        return $fieldCollect;
+        return $fieldCollection;
     }
 
     /**

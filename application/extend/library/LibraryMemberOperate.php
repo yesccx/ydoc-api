@@ -14,7 +14,7 @@ use app\constants\module\LibraryMemberOperateCode;
 use app\entity\model\YLibraryEntity;
 use app\entity\model\YLibraryMemberEntity;
 use app\exception\AppException;
-use app\service\LibraryService;
+use app\service\library\LibraryService;
 
 class LibraryMemberOperate {
 
@@ -136,6 +136,14 @@ class LibraryMemberOperate {
                 LibraryMemberOperateCode::LIBRARY_MEMBER__REMOVE,
                 LibraryMemberOperateCode::LIBRARY_MEMBER__ROLE_MODIFY,
                 LibraryMemberOperateCode::LIBRARY_MEMBER__STATUS_MODIFY,
+                LibraryMemberOperateCode::LIBRARY_DOC_GROUP__CREATE,
+                LibraryMemberOperateCode::LIBRARY_DOC_GROUP__MODIFY,
+                LibraryMemberOperateCode::LIBRARY_DOC_GROUP__REMOVE,
+                LibraryMemberOperateCode::LIBRARY_DOC_GROUP__SORT,
+                LibraryMemberOperateCode::LIBRARY_DOC__CREATE,
+                LibraryMemberOperateCode::LIBRARY_DOC__MODIFY,
+                LibraryMemberOperateCode::LIBRARY_DOC__REMOVE,
+                LibraryMemberOperateCode::LIBRARY_DOC__SORT,
             ],
             YLibraryMemberCode::ROLE__MANAGER => [
                 LibraryMemberOperateCode::LIBRARY__MODIFY,
@@ -143,8 +151,25 @@ class LibraryMemberOperate {
                 LibraryMemberOperateCode::LIBRARY_MEMBER__REMOVE,
                 LibraryMemberOperateCode::LIBRARY_MEMBER__ROLE_MODIFY,
                 LibraryMemberOperateCode::LIBRARY_MEMBER__STATUS_MODIFY,
+                LibraryMemberOperateCode::LIBRARY_DOC_GROUP__CREATE,
+                LibraryMemberOperateCode::LIBRARY_DOC_GROUP__MODIFY,
+                LibraryMemberOperateCode::LIBRARY_DOC_GROUP__REMOVE,
+                LibraryMemberOperateCode::LIBRARY_DOC_GROUP__SORT,
+                LibraryMemberOperateCode::LIBRARY_DOC__CREATE,
+                LibraryMemberOperateCode::LIBRARY_DOC__MODIFY,
+                LibraryMemberOperateCode::LIBRARY_DOC__REMOVE,
+                LibraryMemberOperateCode::LIBRARY_DOC__SORT,
             ],
-            YLibraryMemberCode::ROLE__MEMBER  => [],
+            YLibraryMemberCode::ROLE__MEMBER  => [
+                LibraryMemberOperateCode::LIBRARY_DOC_GROUP__CREATE,
+                LibraryMemberOperateCode::LIBRARY_DOC_GROUP__MODIFY,
+                LibraryMemberOperateCode::LIBRARY_DOC_GROUP__REMOVE,
+                LibraryMemberOperateCode::LIBRARY_DOC_GROUP__SORT,
+                LibraryMemberOperateCode::LIBRARY_DOC__CREATE,
+                LibraryMemberOperateCode::LIBRARY_DOC__MODIFY,
+                LibraryMemberOperateCode::LIBRARY_DOC__REMOVE,
+                LibraryMemberOperateCode::LIBRARY_DOC__SORT,
+            ],
             YLibraryMemberCode::ROLE__GUEST   => [],
         ];
 

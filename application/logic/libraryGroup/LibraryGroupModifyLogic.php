@@ -22,35 +22,37 @@ class LibraryGroupModifyLogic extends BaseLogic {
      *
      * @var YLibraryGroupEntity
      */
-    public $groupEntity;
+    public $libraryGroupEntity;
 
     /**
      * 使用文档库分组信息
      *
-     * @param YLibraryGroupEntity $groupEntity
+     * @param YLibraryGroupEntity $libraryGroupEntity
      * @return $this
      * @throws AppException
      */
-    public function useGroup(YLibraryGroupEntity $groupEntity) {
+    public function useLibraryGroup(YLibraryGroupEntity $libraryGroupEntity) {
         // 校验数据合法性
-        LibraryGroupValidate::checkOrException($groupEntity->toArray(), 'modify');
+        LibraryGroupValidate::checkOrException($libraryGroupEntity->toArray(), 'modify');
 
-        $this->groupEntity = $groupEntity;
+        $this->libraryGroupEntity = $libraryGroupEntity;
 
         return $this;
     }
 
     /**
-     * 修改文档库
+     * 修改文档库分组
      *
      * @return $this
      * @throws AppException
      */
     public function modify() {
-        $this->groupEntity->update_time = time();
-        $updateRes = YLibraryGroupModel::field('name,desc,sort,update_time')->update($this->groupEntity->toArray(), [
-            'id' => $this->groupEntity->id,
-        ]);
+        $this->libraryGroupEntity->update_time = time();
+
+        $updateRes = YLibraryGroupModel::field('name,desc,sort,update_time')->update(
+            $this->libraryGroupEntity->toArray(),
+            ['id' => $this->libraryGroupEntity->id]
+        );
         if (empty($updateRes)) {
             throw new AppException('修改失败');
         }
