@@ -29,7 +29,9 @@ class LibraryDocGroupAuthMiddleware extends LibraryAuthMiddleware {
         }
 
         // 获取文档分组信息
-        $docGroupInfo = LibraryDocGroupService::getLibraryDocGroupInfo($libraryDocGroupId, AppQuery::make(['library_id' => $request->libraryId], 'id'));
+        $docGroupInfo = LibraryDocGroupService::getLibraryDocGroupInfo(
+            $libraryDocGroupId, AppQuery::make(['library_id' => $request->libraryId], 'id')
+        );
         if (empty($docGroupInfo)) {
             return AppResponse::error('文档分组不存在');
         }

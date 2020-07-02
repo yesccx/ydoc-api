@@ -19,7 +19,7 @@ class UserCenterController extends AppBaseController {
      * 用户信息
      */
     public function userInfo() {
-        $user = UserService::getUserInfo($this->uid, 'id,nickname,create_time as reg_time,avatar');
+        $user = UserService::getUserInfo($this->uid, 'id,account,nickname,email,create_time as reg_time,avatar,phone');
         if (empty($user)) {
             return $this->responseSessionInvalid('用户信息不存在');
         }

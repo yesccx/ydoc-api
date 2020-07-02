@@ -37,4 +37,13 @@ class AppHookCode extends BaseCode {
     // 文档创建成功后
     const LIBRARY_DOC_CREATED = 'library_doc_created';
 
+    // 文档模板创建成功后
+    const LIBRARY_DOC_TEMPLATE_CREATED = 'library_doc_template_created';
+
+    // 文档模板修改成功后
+    const LIBRARY_DOC_TEMPLATE_MODIFYED = 'library_doc_template_modifyed';
+
+    // 文档模板删除成功后
+    const LIBRARY_DOC_TEMPLATE_REMOVED = 'library_doc_template_removed';
+
 }

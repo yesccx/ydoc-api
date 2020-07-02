@@ -28,7 +28,9 @@ class LibraryDocAuthMiddleware extends LibraryAuthMiddleware {
         }
 
         // 获取文档信息
-        $docInfo = LibraryDocService::getLibraryDocInfo($libraryDocId, AppQuery::make(['library_id' => $request->libraryId], 'id'));
+        $docInfo = LibraryDocService::getLibraryDocInfo(
+            $libraryDocId, AppQuery::make(['library_id' => $request->libraryId], 'id')
+        );
         if (empty($docInfo)) {
             return AppResponse::error('文档不存在');
         }

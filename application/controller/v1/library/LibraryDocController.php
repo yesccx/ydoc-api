@@ -13,10 +13,10 @@ use app\constants\module\LibraryMemberOperateCode;
 use app\entity\model\YLibraryDocEntity;
 use app\extend\library\LibraryMemberOperate;
 use app\kernel\base\AppBaseController;
-use app\logic\libraryDoc\LibraryDocRemoveLogic;
-use app\logic\libraryDoc\LibraryDocSortLogic;
 use app\logic\libraryDoc\LibraryDocCreateLogic;
 use app\logic\libraryDoc\LibraryDocModifyLogic;
+use app\logic\libraryDoc\LibraryDocRemoveLogic;
+use app\logic\libraryDoc\LibraryDocSortLogic;
 use app\service\library\LibraryDocService;
 use think\Db;
 
@@ -31,6 +31,7 @@ class LibraryDocController extends AppBaseController {
         \app\kernel\middleware\library\LibraryDocAuthMiddleware::class => [ // 文档操作鉴权
             'only' => [
                 'libraryDocModify', 'libraryDocInfo', 'libraryDocRemove', 'libraryDocSort',
+                'libraryDocBaseModify',
             ],
         ],
     ];
@@ -71,12 +72,30 @@ class LibraryDocController extends AppBaseController {
     }
 
     /**
+     * 文档基础信息修改
+     */
+    public function libraryDocBaseModify() {
+        LibraryMemberOperate::checkOperate(LibraryMemberOperateCode::LIBRARY_DOC__MODIFY);
+
+        $docEntity = YLibraryDocEntity::inputMake(['title/s' => '', 'group_id/d' => 0]);
+        $docEntity->library_id = $this->request->libraryId;
+        $docEntity->id = $this->request->libraryDocId;
+
+        $docModify = LibraryDocModifyLogic::make();
+        Db::transaction(function () use ($docModify, $docEntity) {
+            $docModify->useLibraryDoc($docEntity)->modify();
+        });
+
+        return $this->responseData($docModify->libraryDocEntity->toArray());
+    }
+
+    /**
      * 文档集合
      */
     public function libraryDocCollection() {
         $libraryId = $this->request->libraryId;
 
-        $collection = LibraryDocService::getLibraryDocCollection($libraryId, 'id,uid,library_id,group_id,title,sort');
+        $collection = LibraryDocService::getLibraryDocCollection($libraryId, 'id,library_id,group_id,title,sort,update_time');
 
         return $this->responseData($collection);
     }

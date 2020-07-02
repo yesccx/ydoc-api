@@ -14,6 +14,7 @@ Route::group('v1/library/doc', function () {
     Route::post('info', 'libraryDocInfo');
     Route::post('create', 'libraryDocCreate');
     Route::post('modify', 'libraryDocModify');
+    Route::post('base-modify', 'libraryDocBaseModify');
     Route::post('remove', 'libraryDocRemove');
     Route::post('sort', 'libraryDocSort');
 })->prefix('v1.library.LibraryDoc/')->middleware('AppSessionMiddleware');

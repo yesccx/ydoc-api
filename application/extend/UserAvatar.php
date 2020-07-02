@@ -87,7 +87,7 @@ class UserAvatar {
         // 初始化目录
         checkMkdir(pathinfo($fullName, PATHINFO_DIRNAME));
 
-        return (new LetterAvatar($name))->saveAs($fullName);
+        return (new LetterAvatar($name, 'circle', 480))->saveAs($fullName);
     }
 
     /**

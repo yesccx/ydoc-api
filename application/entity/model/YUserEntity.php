@@ -20,6 +20,8 @@ use app\kernel\model\YUserModel;
  * @property string $avatar 用户头像
  * @property string $email 用户邮箱
  * @property string $nickname 用户昵称
+ * @property string $qq qq号
+ * @property string $phone 手机号
  * @property int $status 用户状态：1正常 2禁用
  * @property int $delete_time 删除时间
  * @property int $create_time 用户注册时间

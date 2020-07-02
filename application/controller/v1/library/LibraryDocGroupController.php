@@ -26,12 +26,12 @@ class LibraryDocGroupController extends AppBaseController {
     protected $middleware = [
         \app\kernel\middleware\library\LibraryAuthMiddleware::class         => [ // 文档库操作鉴权
             'only' => [
-                'groupCreate', 'groupTree',
+                'docGroupCreate', 'docGroupTree',
             ],
         ],
         \app\kernel\middleware\library\LibraryDocGroupAuthMiddleware::class => [ // 文档分组操作鉴权
             'only' => [
-                'groupInfo', 'groupModify', 'groupRemove', 'groupSort',
+                'docGroupInfo', 'docGroupModify', 'docGroupRemove', 'docGroupSort',
             ],
         ],
     ];
@@ -39,11 +39,11 @@ class LibraryDocGroupController extends AppBaseController {
     /**
      * 文档分组树
      */
-    public function groupTree() {
+    public function docGroupTree() {
         $libraryId = $this->request->libraryId;
 
         // 获取文档分组集合，构建分组树
-        $collection = LibraryDocGroupService::getLibraryDocGroupCollection($libraryId, 'id,uid,library_id,pid,name,desc,sort');
+        $collection = LibraryDocGroupService::getLibraryDocGroupCollection($libraryId, 'id,library_id,pid,name,desc,sort');
         $tree = LibraryDocGroupTree::buildTree(0, $collection);
 
         return $this->responseData($tree);
@@ -52,7 +52,7 @@ class LibraryDocGroupController extends AppBaseController {
     /**
      * 文档分组创建
      */
-    public function groupCreate() {
+    public function docGroupCreate() {
         LibraryMemberOperate::checkOperate(LibraryMemberOperateCode::LIBRARY_DOC_GROUP__CREATE);
 
         $libraryId = $this->request->libraryId;
@@ -73,7 +73,7 @@ class LibraryDocGroupController extends AppBaseController {
     /**
      * 文档分组修改
      */
-    public function groupModify() {
+    public function docGroupModify() {
         LibraryMemberOperate::checkOperate(LibraryMemberOperateCode::LIBRARY_DOC_GROUP__MODIFY);
 
         $docGroupId = $this->request->libraryDocGroupId;
@@ -82,6 +82,7 @@ class LibraryDocGroupController extends AppBaseController {
         // 准备文档库分组实体信息
         $groupEntity = YLibraryDocGroupEntity::make($groupInfo);
         $groupEntity->id = $docGroupId;
+        $groupEntity->library_id = $this->request->libraryId;
 
         $docGroupModify = LibraryDocGroupModifyLogic::make();
         Db::transaction(function () use ($docGroupModify, $groupEntity) {
@@ -94,7 +95,7 @@ class LibraryDocGroupController extends AppBaseController {
     /**
      * 文档分组删除
      */
-    public function groupRemove() {
+    public function docGroupRemove() {
         LibraryMemberOperate::checkOperate(LibraryMemberOperateCode::LIBRARY_DOC_GROUP__REMOVE);
 
         $docGroupId = $this->request->libraryDocGroupId;
@@ -116,7 +117,7 @@ class LibraryDocGroupController extends AppBaseController {
     /**
      * 文档分组排序
      */
-    public function groupSort() {
+    public function docGroupSort() {
         LibraryMemberOperate::checkOperate(LibraryMemberOperateCode::LIBRARY_DOC_GROUP__SORT);
 
         $libraryId = $this->request->libraryId;
@@ -135,9 +136,9 @@ class LibraryDocGroupController extends AppBaseController {
     /**
      * 文档分组信息
      */
-    public function groupInfo() {
+    public function docGroupInfo() {
         $docGroupId = $this->request->libraryDocGroupId;
-        $docInfo = LibraryDocGroupService::getLibraryDocGroupInfo($docGroupId, 'id,uid,library_id,pid,name,desc,sort');
+        $docInfo = LibraryDocGroupService::getLibraryDocGroupInfo($docGroupId, 'id,library_id,pid,name,desc,sort');
         return $this->responseData($docInfo);
     }
 

@@ -58,14 +58,14 @@ class LibraryDocCreateLogic extends BaseLogic {
     protected function computeDocSort($step = 10000) {
         // 获取末尾分组排序值
         $lastGroup = YLibraryDocGroupModel::findOne(AppQuery::make(
-            ['library_id' => $this->libraryDocEntity->library_id, 'pid' => $this->libraryDocEntity->pid],
+            ['library_id' => $this->libraryDocEntity->library_id, 'pid' => $this->libraryDocEntity->group_id],
             'sort', 'sort desc'
         ));
         $lastGroupSort = $lastGroup ? intval($lastGroup['sort'] + $step) : 0;
 
         // 获取末尾文档排序值
         $lastDoc = YLibraryDocModel::findOne(AppQuery::make(
-            ['library_id' => $this->libraryDocEntity->library_id, 'group_id' => $this->libraryDocEntity->pid],
+            ['library_id' => $this->libraryDocEntity->library_id, 'group_id' => $this->libraryDocEntity->group_id],
             'sort', 'sort desc'
         ));
         $lastDocSort = $lastDoc ? intval($lastDoc['sort'] + $step) : 0;

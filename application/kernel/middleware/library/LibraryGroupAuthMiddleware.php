@@ -24,7 +24,9 @@ class LibraryGroupAuthMiddleware {
         }
 
         // 判断文档库分组是否存在
-        $libraryGroupInfo = LibraryGroupService::getLibraryGroupInfo($libraryGroupId, AppQuery::make(['uid' => $request->appSession->uid], 'id'));
+        $libraryGroupInfo = LibraryGroupService::getLibraryGroupInfo(
+            $libraryGroupId, AppQuery::make(['uid' => $request->appSession->uid], 'id')
+        );
         if (empty($libraryGroupInfo)) {
             return AppResponse::error('文档库分组不存在');
         }

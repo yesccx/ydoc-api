@@ -48,7 +48,6 @@ CREATE TABLE `y_library_group` (
 DROP TABLE IF EXISTS `y_library_doc`;
 CREATE TABLE `y_library_doc` (
   `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '自增id',
-  `uid` int(10) UNSIGNED NOT NULL DEFAULT '0' COMMENT '用户uid',
   `library_id` int(10) UNSIGNED NOT NULL DEFAULT '0' COMMENT '文档库id',
   `group_id` int(10) UNSIGNED NOT NULL DEFAULT '0' COMMENT '文档分组id',
   `title` varchar(32) NOT NULL DEFAULT '' COMMENT '文档标题',
@@ -60,10 +59,22 @@ CREATE TABLE `y_library_doc` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT '文档库文档表';
 
+DROP TABLE IF EXISTS `y_library_doc_template`;
+CREATE TABLE `y_library_doc_template` (
+  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '自增id',
+  `uid` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '创建人uid',
+  `name` varchar(32) NOT NULL DEFAULT '' COMMENT '模板名称',
+  `introduction` varchar(255) NOT NULL DEFAULT '' COMMENT '模板介绍',
+  `content` longtext NOT NULL DEFAULT '' COMMENT '模板内容',
+  `delete_time` int(10) UNSIGNED NOT NULL DEFAULT '0' COMMENT '删除时间 0表示未删除',
+  `create_time` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '创建时间',
+  `update_time` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '更新时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT '文档库文档模板表';
+
 DROP TABLE IF EXISTS `y_library_doc_group`;
 CREATE TABLE `y_library_doc_group` (
   `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '自增id',
-  `uid` int(10) UNSIGNED NOT NULL DEFAULT '0' COMMENT '用户uid',
   `library_id` int(10) UNSIGNED NOT NULL DEFAULT '0' COMMENT '文档库id',
   `pid` int(10) UNSIGNED NOT NULL DEFAULT '0' COMMENT '上级分组id',
   `name` varchar(32) NOT NULL DEFAULT '' COMMENT '分组名称',
@@ -84,6 +95,8 @@ CREATE TABLE `y_user` (
   `avatar` varchar(255) NOT NULL DEFAULT '' COMMENT '用户头像',
   `email` varchar(32) NOT NULL DEFAULT '' COMMENT '用户邮箱',
   `nickname` varchar(32) NOT NULL DEFAULT '' COMMENT '用户昵称',
+  `qq` varchar(15) NOT NULL DEFAULT '' COMMENT 'qq号',
+  `phone` varchar(11) NOT NULL DEFAULT '' COMMENT '手机号',
   `status` tinyint(1) UNSIGNED NOT NULL DEFAULT 1 COMMENT '用户状态：0审核中 1正常 2禁用',
   `delete_time` int(10) UNSIGNED NOT NULL DEFAULT '0' COMMENT '删除时间 0表示未删除',
   `create_time` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '用户注册时间',
@@ -107,12 +120,12 @@ CREATE TABLE `y_user_log` (
 DROP TABLE IF EXISTS `y_team`;
 CREATE TABLE `y_team` (
   `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '自增id',
-  `uid` int UNSIGNED NOT NULL DEFAULT 0 COMMENT '团队创始人uid',
+  `uid` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '团队创始人uid',
   `name` varchar(32) NOT NULL DEFAULT '' COMMENT '团队名称',
   `desc` varchar(255) NOT NULL DEFAULT '' COMMENT '团队简介',
   `logo` varchar(255) NOT NULL DEFAULT '' COMMENT '团队logo',
   `conf` text NOT NULL DEFAULT '' COMMENT '团队配置参数',
-  `member_num` int UNSIGNED NOT NULL DEFAULT 0 COMMENT '团队人数',
+  `member_num` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '团队人数',
   `delete_time` int(10) UNSIGNED NOT NULL DEFAULT '0' COMMENT '删除时间 0表示未删除',
   `update_time` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '修改时间',
   `create_time` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '创建时间',
