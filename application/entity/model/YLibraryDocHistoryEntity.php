@@ -1,20 +1,22 @@
 <?php
 
 /*
- * YLibraryDocModel Entity
+ * YLibraryDocHistoryModel Entity
  *
- * @Created: 2020-06-20 22:32:47
+ * @Created: 2020-07-03 18:35:56
  * @Author: yesc (yes.ccx@gmail.com)
  */
 
 namespace app\entity\model;
 
 use app\entity\extend\BaseEntity;
-use app\kernel\model\YLibraryDocModel;
+use app\kernel\model\YLibraryDocHistoryModel;
 
 /**
  * @property int $id 文档id
  * @property int $library_id 文档库id
+ * @property int $doc_id 文档id
+ * @property int $uid 用户uid
  * @property int $group_id 文档分组id
  * @property string $title 文档标题
  * @property string $content 文档内容
@@ -23,8 +25,8 @@ use app\kernel\model\YLibraryDocModel;
  * @property int $create_time 创建时间
  * @property int $update_time 更新时间
  */
-class YLibraryDocEntity extends BaseEntity {
+class YLibraryDocHistoryEntity extends BaseEntity {
 
-    protected $model = YLibraryDocModel::class;
+    protected $model = YLibraryDocHistoryModel::class;
 
 }

@@ -59,6 +59,22 @@ CREATE TABLE `y_library_doc` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT '文档库文档表';
 
+DROP TABLE IF EXISTS `y_library_doc_history`;
+CREATE TABLE `y_library_doc_history` (
+  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '自增id',
+  `library_id` int(10) UNSIGNED NOT NULL DEFAULT '0' COMMENT '文档库id',
+  `doc_id` int(10) UNSIGNED NOT NULL DEFAULT '0' COMMENT '文档id',
+  `uid` int(10) UNSIGNED NOT NULL DEFAULT '0' COMMENT '用户uid',
+  `group_id` int(10) UNSIGNED NOT NULL DEFAULT '0' COMMENT '文档分组id',
+  `title` varchar(32) NOT NULL DEFAULT '' COMMENT '文档标题',
+  `content` longtext NOT NULL DEFAULT '' COMMENT '文档内容',
+  `sort` int(10) UNSIGNED NOT NULL DEFAULT '0' COMMENT '排序 从大到小',
+  `delete_time` int(10) UNSIGNED NOT NULL DEFAULT '0' COMMENT '删除时间 0表示未删除',
+  `create_time` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '创建时间',
+  `update_time` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '更新时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT '文档库文档历史记录表';
+
 DROP TABLE IF EXISTS `y_library_doc_template`;
 CREATE TABLE `y_library_doc_template` (
   `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '自增id',

@@ -26,6 +26,13 @@ class LibraryDocGroupRemoveLogic extends BaseLogic {
     public $libraryDocGroupEntity;
 
     /**
+     * 删除的文档id集
+     *
+     * @var array
+     */
+    public $childDocIdCollection = [];
+
+    /**
      * 是否深度删除
      * PS: 递归删除当前分组下的分组、文档
      *
@@ -122,6 +129,7 @@ class LibraryDocGroupRemoveLogic extends BaseLogic {
         // 在递归末尾统一做删除动作
         if ($isRoot) {
             if (!empty($childDocIdCollection)) {
+                $this->childDocIdCollection = $childDocIdCollection;
                 YLibraryDocModel::whereIn('id', $childDocIdCollection)->softDelete();
             }
             if (!empty($childGroupIdCollection)) {

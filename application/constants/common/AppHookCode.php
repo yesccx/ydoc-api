@@ -37,6 +37,9 @@ class AppHookCode extends BaseCode {
     // 文档创建成功后
     const LIBRARY_DOC_CREATED = 'library_doc_created';
 
+    // 文档修改
+    const LIBRARY_DOC_MODIFY = 'library_doc_modify';
+
     // 文档模板创建成功后
     const LIBRARY_DOC_TEMPLATE_CREATED = 'library_doc_template_created';
 

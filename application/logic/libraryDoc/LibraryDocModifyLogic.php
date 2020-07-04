@@ -9,8 +9,11 @@
 
 namespace app\logic\libraryDoc;
 
+use app\constants\common\AppHookCode;
 use app\entity\model\YLibraryDocEntity;
+use app\entity\model\YLibraryDocHistoryEntity;
 use app\exception\AppException;
+use app\extend\common\AppHook;
 use app\kernel\model\YLibraryDocModel;
 use app\kernel\validate\library\LibraryDocValidate;
 use app\logic\extend\BaseLogic;
@@ -47,6 +50,12 @@ class LibraryDocModifyLogic extends BaseLogic {
      */
     public function modify() {
         $this->libraryDocEntity->update_time = time();
+
+        // 文档修改前，需要触发保存历史记录
+        AppHook::listen(AppHookCode::LIBRARY_DOC_MODIFY, YLibraryDocHistoryEntity::make([
+            'doc_id' => $this->libraryDocEntity->id,
+            'uid'    => $this->uid,
+        ]));
 
         $libraryDoc = YLibraryDocModel::field('title,content,group_id,update_time')->update(
             $this->libraryDocEntity->toArray(),

@@ -15,26 +15,29 @@ use app\constants\common\AppHookCode;
 
 return [
     // 应用初始化
-    'app_init'                   => [],
+    'app_init'                      => [],
     // 应用开始
-    'app_begin'                  => [
+    'app_begin'                     => [
         app\kernel\behavior\ModelBehavior::class,
     ],
     // 模块初始化
-    'module_init'                => [],
+    'module_init'                   => [],
     // 操作开始执行
-    'action_begin'               => [],
+    'action_begin'                  => [],
     // 视图内容过滤
-    'view_filter'                => [],
+    'view_filter'                   => [],
     // 日志写入
-    'log_write'                  => [],
+    'log_write'                     => [],
     // 应用结束
-    'app_end'                    => [],
+    'app_end'                       => [],
     // 用户注册成功后
-    AppHookCode::USER_REGISTED   => [
+    AppHookCode::USER_REGISTED      => [
         app\kernel\behavior\UserBehavior::class,
     ],
-    AppHookCode::LIBRARY_REMOVED => [
+    AppHookCode::LIBRARY_REMOVED    => [
         app\kernel\behavior\LibraryBehavior::class,
+    ],
+    AppHookCode::LIBRARY_DOC_MODIFY => [
+        app\kernel\behavior\LibraryDocBehavior::class,
     ],
 ];

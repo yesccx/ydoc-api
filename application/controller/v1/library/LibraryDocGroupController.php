@@ -111,7 +111,7 @@ class LibraryDocGroupController extends AppBaseController {
             $docGroupRemove->useLibraryDocGroup($docGroupId)->useDeep($isDeep)->remove();
         });
 
-        return $this->responseSuccess('删除成功');
+        return $this->responseData($docGroupRemove->childDocIdCollection);
     }
 
     /**
