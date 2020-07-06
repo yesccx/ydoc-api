@@ -49,10 +49,12 @@ class LibraryDocGroupModifyLogic extends BaseLogic {
      * @throws AppException
      */
     public function modify() {
-        $this->libraryDocGroupEntity->update_time = time();
-        $updateRes = YLibraryDocGroupModel::field('pid,name,desc,sort,update_time')->update($this->libraryDocGroupEntity->toArray(), [
-            'id' => $this->libraryDocGroupEntity->id,
-        ]);
+        $libraryDocGroupEntity = $this->libraryDocGroupEntity;
+        $libraryDocGroupEntity->update_time = time();
+
+        $updateRes = YLibraryDocGroupModel::update(
+            $libraryDocGroupEntity->toArray(), ['id' => $libraryDocGroupEntity->id], 'pid,name,desc,sort,update_time'
+        );
         if (empty($updateRes)) {
             throw new AppException('修改失败');
         }

@@ -72,10 +72,10 @@ class LibraryDocSortLogic extends BaseLogic {
      * @throws AppException
      */
     public function sort() {
-        $updateRes = YLibraryDocModel::field('group_id,sort,update_time')->update(
-            $this->libraryDocEntity->toArray(), ['id' => $this->libraryDocEntity->id]
-        );
+        $libraryDocEntity = $this->libraryDocEntity;
+        $libraryDocEntity->update_time = time();
 
+        $updateRes = YLibraryDocModel::update($libraryDocEntity->toArray(), ['id' => $libraryDocEntity->id], 'group_id,sort,update_time');
         if (empty($updateRes)) {
             throw new AppException('修改失败，请重试');
         }

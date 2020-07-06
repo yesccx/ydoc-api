@@ -47,12 +47,10 @@ class LibraryGroupModifyLogic extends BaseLogic {
      * @throws AppException
      */
     public function modify() {
-        $this->libraryGroupEntity->update_time = time();
+        $libraryGroupEntity = $this->libraryGroupEntity;
+        $libraryGroupEntity->update_time = time();
 
-        $updateRes = YLibraryGroupModel::field('name,desc,sort,update_time')->update(
-            $this->libraryGroupEntity->toArray(),
-            ['id' => $this->libraryGroupEntity->id]
-        );
+        $updateRes = YLibraryGroupModel::update($libraryGroupEntity->toArray(), ['id' => $libraryGroupEntity->id], 'name,desc,sort,update_time');
         if (empty($updateRes)) {
             throw new AppException('修改失败');
         }

@@ -49,17 +49,17 @@ class LibraryDocModifyLogic extends BaseLogic {
      * @throws AppException
      */
     public function modify() {
-        $this->libraryDocEntity->update_time = time();
+        $libraryDocEntity = $this->libraryDocEntity;
+        $libraryDocEntity->update_time = time();
 
         // 文档修改前，需要触发保存历史记录
         AppHook::listen(AppHookCode::LIBRARY_DOC_MODIFY, YLibraryDocHistoryEntity::make([
-            'doc_id' => $this->libraryDocEntity->id,
+            'doc_id' => $libraryDocEntity->id,
             'uid'    => $this->uid,
         ]));
 
-        $libraryDoc = YLibraryDocModel::field('title,content,group_id,update_time')->update(
-            $this->libraryDocEntity->toArray(),
-            ['id' => $this->libraryDocEntity->id]
+        $libraryDoc = YLibraryDocModel::update(
+            $libraryDocEntity->toArray(), ['id' => $libraryDocEntity->id], 'title,content,group_id,update_time'
         );
         if (empty($libraryDoc)) {
             throw new AppException('未知错误');

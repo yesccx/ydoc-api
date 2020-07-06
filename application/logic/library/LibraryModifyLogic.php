@@ -49,16 +49,15 @@ class LibraryModifyLogic extends BaseLogic {
      * @throws AppException
      */
     public function modify() {
-        $this->libraryEntity->update_time = time();
+        $libraryEntity = $this->libraryEntity;
+        $libraryEntity->update_time = time();
 
-        $libraryInfo = YLibraryModel::field('name,desc,update_time')->update(
-            $this->libraryEntity->toArray(), ['id' => $this->libraryEntity->id]
-        );
+        $libraryInfo = YLibraryModel::update($libraryEntity->toArray(), ['id' => $libraryEntity->id], 'name,desc,update_time');
         if (empty($libraryInfo)) {
             throw new AppException('文档库修改失败，可能操作过快');
         }
 
-        AppHook::listen(AppHookCode::LIBRARY_MODIFYED, $this->libraryEntity);
+        AppHook::listen(AppHookCode::LIBRARY_MODIFYED, $libraryEntity);
 
         return $this;
     }

@@ -47,13 +47,17 @@ class LibraryDocTemplateModifyLogic extends BaseLogic {
      * @throws AppException
      */
     public function modify() {
-        $this->libraryDocTemplateEntity->update_time = time();
-        $libraryDocTemplate = YLibraryDocTemplateModel::field('name,introduction,content,update_time')->update($this->libraryDocTemplateEntity->toArray());
+        $libraryDocTemplateEntity = $this->libraryDocTemplateEntity;
+        $libraryDocTemplateEntity->update_time = time();
+
+        $libraryDocTemplate = YLibraryDocTemplateModel::update(
+            $libraryDocTemplateEntity->toArray(), ['id' => $libraryDocTemplateEntity->id], 'name,introduction,content,update_time'
+        );
         if (empty($libraryDocTemplate)) {
             throw new AppException('未知错误');
         }
 
-        AppHook::listen(AppHookCode::LIBRARY_DOC_TEMPLATE_MODIFYED, $this->libraryDocTemplateEntity);
+        AppHook::listen(AppHookCode::LIBRARY_DOC_TEMPLATE_MODIFYED, $libraryDocTemplateEntity);
 
         return $this;
     }
