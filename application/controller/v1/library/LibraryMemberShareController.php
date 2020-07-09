@@ -37,10 +37,10 @@ class LibraryMemberShareController extends AppBaseController {
      * 文档库文档分享信息
      */
     public function docShareInfo() {
-        $libraryId = $this->request->libraryId;
+        $libraryDocId = $this->request->libraryDocId;
 
-        $shareInfo = LibraryMemberShareService::getLibraryShareInfo(
-            $this->uid, $libraryId,
+        $shareInfo = LibraryMemberShareService::getLibraryDocShareInfo(
+            $this->uid, $libraryDocId,
             'id,library_id,share_code,share_name,share_desc,access_password,access_count,is_protected,expire_time,create_time,update_time'
         );
         if (empty($shareInfo)) {

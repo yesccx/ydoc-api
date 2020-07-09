@@ -28,4 +28,9 @@ class AppResponseCode extends BaseCode {
      */
     const SESSION_INVALID = 1110;
 
+    /**
+     * 文档库分享受保护
+     */
+    const LIBRARY_SHARE_PROTECTED = 5001;
+
 }

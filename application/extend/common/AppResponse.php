@@ -40,10 +40,11 @@ class AppResponse {
      * 响应失败
      *
      * @param string $msg
+     * @param int $code 状态码
      * @return void
      */
-    public static function error(string $msg = 'error') {
-        return self::handleResponse(AppResponseCode::ERROR, $msg);
+    public static function error(string $msg = 'error', $code = AppResponseCode::ERROR) {
+        return self::handleResponse($code, $msg);
     }
 
     /**

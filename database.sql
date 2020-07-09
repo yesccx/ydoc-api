@@ -27,7 +27,7 @@ CREATE TABLE `y_library_share` (
   `access_count` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '访问计数',
   `is_protected` tinyint(1) UNSIGNED NOT NULL DEFAULT 0 COMMENT '是否受保护 0非保护（不需要访问密码） 1受保护（需要访问密码）',
   `expire_time` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '过期时间 0为永不过期',
-  `status` tinyint(1) UNSIGNED NOT NULL DEFAULT 0 COMMENT '文档库状态 0审核中 1启用 2禁用',
+  `status` tinyint(1) UNSIGNED NOT NULL DEFAULT 1 COMMENT '文档库状态 0审核中 1启用 2禁用',
   `delete_time` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '删除时间 0表示未删除',
   `create_time` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '创建时间（分享时间）',
   `update_time` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '更新时间',
