@@ -10,25 +10,31 @@
 namespace app\controller\v1\library;
 
 use app\constants\module\LibraryMemberOperateCode;
+use app\extend\common\AppPagination;
+use app\extend\common\AppQuery;
 use app\extend\library\LibraryMemberOperate;
 use app\kernel\base\AppBaseController;
-use app\logic\libraryManager\LibraryMemberLibrarySortLogic;
 use app\logic\libraryManager\LibraryMemberInviteLogic;
+use app\logic\libraryManager\LibraryMemberLibrarySortLogic;
 use app\logic\libraryManager\LibraryMemberRoleModifyLogic;
 use app\logic\libraryManager\LibraryMemberStatusModifyLogic;
 use app\logic\libraryManager\LibraryMemberUninviteLogic;
 use app\service\library\LibraryManagerService;
 use app\service\library\LibraryService;
+use app\service\library\LibraryShareService;
 use think\Db;
 
 class LibraryManagerController extends AppBaseController {
 
     protected $middleware = [
-        \app\kernel\middleware\library\LibraryAuthMiddleware::class => [ // 文档库操作鉴权
+        \app\kernel\middleware\library\LibraryAuthMiddleware::class             => [ // 文档库操作鉴权
             'only' => [
-                'libraryManagerInfo', 'libraryMemberLibrarySort', 'libraryMemberCollection', 'libraryMemberSort',
-                'libraryMemberInvite', 'libraryMemberStatusModify', 'libraryMemberRoleModify', 'libraryMemberUninvite',
+                'libraryManagerInfo', 'libraryMemberLibrarySort', 'libraryMemberCollection', 'libraryMemberInvite',
+                'libraryMemberUninvite', 'libraryMemberStatusModify', 'libraryMemberRoleModify', 'libraryShareList',
             ],
+        ],
+        \app\kernel\middleware\library\LibraryManagerShareAuthMiddleware::class => [
+            'only' => ['libraryShareStatusModify', 'libraryShareRemove'],
         ],
     ];
 
@@ -159,6 +165,67 @@ class LibraryManagerController extends AppBaseController {
         });
 
         return $this->responseSuccess('修改成功');
+    }
+
+    /**
+     * 文档库分享列表
+     */
+    public function libraryShareList(AppPagination $pagination) {
+        $searchKey = $this->input('search_key/s', '');
+        $searchCreateStart = $this->input('search_create_start/d', 0);
+        $searchCreateEnd = $this->input('search_create_end/d', 0);
+
+        $query = AppQuery::make()
+            ->field('id,library_id,doc_id,uid,share_name,share_code,is_protected,access_count,create_time,expire_time,status');
+        if (empty($pagination->pageOrder)) {
+            $query->order('id', 'desc');
+        }
+
+        // 查询条件
+        $query->when($searchKey, function ($squery) use ($searchKey) {
+            $squery->whereLike('share_name', "%{$searchKey}%");
+        })->when($searchCreateStart, function ($squery) use ($searchCreateStart) {
+            $squery->where('create_time', '>=', $searchCreateStart);
+        })->when($searchCreateEnd, function ($squery) use ($searchCreateEnd) {
+            $squery->where('create_time', '<=', $searchCreateEnd + 86399);
+        });
+
+        $collection = LibraryManagerService::getLibraryShareList(
+            $this->request->libraryId, $query, $pagination
+        );
+        return $this->responseData($collection);
+    }
+
+    /**
+     * 文档库分享状态更改
+     */
+    public function libraryShareStatusModify() {
+        LibraryMemberOperate::checkOperate(LibraryMemberOperateCode::LIBRARY_SHARE__STATUS_MODIFY);
+
+        $libraryShareId = $this->request->libraryShareId;
+        $status = $this->input('status/d', 0);
+        if (!in_array($status, [1, 2])) {
+            return $this->responseError('状态值错误');
+        }
+
+        $modifyRes = LibraryShareService::modifyLibraryShareStatus($libraryShareId, $status);
+        if (empty($modifyRes)) {
+            return $this->responseError('修改失败');
+        }
+
+        return $this->responseSuccess('修改成功');
+    }
+
+    /**
+     * 文档库分享删除
+     */
+    public function libraryShareRemove() {
+        LibraryMemberOperate::checkOperate(LibraryMemberOperateCode::LIBRARY_SHARE__REMOVE);
+
+        $libraryShareId = $this->request->libraryShareId;
+        LibraryShareService::removeLibraryShare($libraryShareId);
+
+        return $this->responseSuccess('删除成功');
     }
 
 }

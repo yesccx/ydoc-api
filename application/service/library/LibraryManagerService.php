@@ -10,6 +10,7 @@
 namespace app\service\library;
 
 use app\kernel\model\YLibraryMemberModel;
+use app\kernel\model\YLibraryShareModel;
 
 class LibraryManagerService {
 
@@ -43,12 +44,33 @@ class LibraryManagerService {
 
         // 追加用户信息
         if (!empty($memberCollection)) {
-            $memberCollection = $memberCollection->load(['user_info' => function ($squery) {
+            $memberCollection->load(['user_info' => function ($squery) {
                 $squery->field('id,nickname,avatar');
             }])->append(['user_info.avatar_url'])->toArray();
         }
 
         return $memberCollection;
+    }
+
+    /**
+     * 获取文档库分享列表
+     *
+     * @param int $libraryId 文档库id
+     * @param Query|string|null $query 查询器
+     * @param AppPagination|null $pagination 分页对象
+     * @return mixed
+     */
+    public static function getLibraryShareList($libraryId, $query = null, $pagination = null) {
+        $query = YLibraryShareModel::useQuery($query)->where(['library_id' => $libraryId]);
+        $pageList = $query->pageSelect($pagination)->toArray();
+
+        // 追加用户信息
+        if (!empty($pageList['list'])) {
+            $pageList['list']->load(['user_info' => function ($squery) {
+                $squery->field('id,nickname,avatar');
+            }])->append(['user_info.avatar_url'])->toArray();
+        }
+        return $pageList;
     }
 
 }

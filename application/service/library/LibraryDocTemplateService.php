@@ -25,8 +25,8 @@ class LibraryDocTemplateService {
         $collection = $query->select();
         if (!empty($collection)) {
             $collection->load(['user_info' => function ($squery) {
-                $squery->field('id,nickname,account,avatar')->append(['avatar_url'])->hidden(['avatar']);
-            }]);
+                $squery->field('id,nickname,account,avatar');
+            }])->append(['user_info.avatar_url']);
         }
 
         return $collection;

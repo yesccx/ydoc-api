@@ -36,4 +36,35 @@ class LibraryShareService {
         return $query->find();
     }
 
+    /**
+     * 删除分享
+     *
+     * @param int $shareId 分享id
+     * @return bool
+     */
+    public static function removeLibraryShare($shareId) {
+        return YLibraryShareModel::where(['id' => $shareId])->softDelete();
+    }
+
+    /**
+     * 修改分享状态
+     *
+     * @param int $shareId 分享id
+     * @param int $status 状态值
+     * @return bool
+     */
+    public static function modifyLibraryShareStatus($shareId, $status) {
+        return YLibraryShareModel::where(['id' => $shareId])->update(['status' => $status, 'update_time' => time()]);
+    }
+
+    /**
+     * 分享访问数累计
+     *
+     * @param int $shareId 分享id
+     * @return void
+     */
+    public static function incShareAccessCount($shareId) {
+        YLibraryShareModel::where(['id' => $shareId])->setInc('access_count');
+    }
+
 }

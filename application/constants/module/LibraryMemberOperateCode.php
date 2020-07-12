@@ -61,4 +61,10 @@ class LibraryMemberOperateCode extends BaseCode {
     // 文档排序
     const LIBRARY_DOC__SORT = 'library_doc__sort';
 
+    // 文档库分享删除
+    const LIBRARY_SHARE__REMOVE = 'library_share__remove';
+
+    // 文档库分享状态修改
+    const LIBRARY_SHARE__STATUS_MODIFY = 'library_share__status_modify';
+
 }

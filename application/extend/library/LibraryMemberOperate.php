@@ -144,6 +144,8 @@ class LibraryMemberOperate {
                 LibraryMemberOperateCode::LIBRARY_DOC__MODIFY,
                 LibraryMemberOperateCode::LIBRARY_DOC__REMOVE,
                 LibraryMemberOperateCode::LIBRARY_DOC__SORT,
+                LibraryMemberOperateCode::LIBRARY_SHARE__REMOVE,
+                LibraryMemberOperateCode::LIBRARY_SHARE__STATUS_MODIFY,
             ],
             YLibraryMemberCode::ROLE__MANAGER => [
                 LibraryMemberOperateCode::LIBRARY__MODIFY,
@@ -159,6 +161,8 @@ class LibraryMemberOperate {
                 LibraryMemberOperateCode::LIBRARY_DOC__MODIFY,
                 LibraryMemberOperateCode::LIBRARY_DOC__REMOVE,
                 LibraryMemberOperateCode::LIBRARY_DOC__SORT,
+                LibraryMemberOperateCode::LIBRARY_SHARE__REMOVE,
+                LibraryMemberOperateCode::LIBRARY_SHARE__STATUS_MODIFY,
             ],
             YLibraryMemberCode::ROLE__MEMBER  => [
                 LibraryMemberOperateCode::LIBRARY_DOC_GROUP__CREATE,

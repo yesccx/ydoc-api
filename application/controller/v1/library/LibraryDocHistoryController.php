@@ -43,8 +43,8 @@ class LibraryDocHistoryController extends AppBaseController {
         // 追加文档库信息
         if (!empty($pageList['list'])) {
             $pageList['list']->load(['user_info' => function ($squery) {
-                $squery->field('id,nickname,avatar')->append(['avatar_url']);
-            }]);
+                $squery->field('id,nickname,avatar');
+            }])->append(['user_info.avatar_url']);
         }
 
         return $this->responseData($pageList);

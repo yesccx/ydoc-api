@@ -30,6 +30,9 @@ class LibraryShareController extends AppBaseController {
         // 分享人信息
         $shareInfo['user_info'] = UserService::getUserInfo($shareInfo['uid'], 'id,avatar,nickname')->append(['avatar_url']);
 
+        // 累计访问量
+        LibraryShareService::incShareAccessCount($shareId);
+
         return $this->responseData($shareInfo);
     }
 
