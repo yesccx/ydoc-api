@@ -47,6 +47,28 @@ class AppCache {
     }
 
     /**
+     * 获取缓存，如果不存在则调用指定的回调去生成并缓存
+     *
+     * @param string $name 缓存名
+     * @param callable $cb 生成新值的方法
+     * @param string $default 失败时返回的默认值
+     * @return string 成功返回token，失败返回默认值
+     * @throws Exception
+     */
+    public function uget($name, $cb, $default = false) {
+        if ($token = $this->get($name, false)) {
+            return $token;
+        }
+
+        if (empty($token = $cb())) {
+            return $default;
+        }
+        $this->set($name, $token);
+
+        return $token;
+    }
+
+    /**
      * 缓存标签
      * PS: 所有缓存操作需要定义标签
      *

@@ -16,4 +16,9 @@ class AppCacheCode {
      */
     const USER__SESSION_CODE = 'user__session_code';
 
+    /**
+     * 七牛云 bucket token
+     */
+    const QINIU__BUCKET_TOEKN = 'qiniu__bucket_token';
+
 }

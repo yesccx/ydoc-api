@@ -10,6 +10,7 @@
 namespace app\controller\v1;
 
 use app\extend\common\AppQuery;
+use app\extend\QiniuManager;
 use app\kernel\base\AppBaseController;
 use app\service\UserService;
 
@@ -32,6 +33,14 @@ class ToolsController extends AppBaseController {
         $userCollection = UserService::getUserCollection($limit, $query);
 
         return $this->responseData($userCollection);
+    }
+
+    /**
+     * 图片上传
+     */
+    public function imageUpload() {
+        $imageInfo = QiniuManager::make()->onlyImage()->upload();
+        return $this->responseData($imageInfo);
     }
 
 }

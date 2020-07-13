@@ -11,6 +11,7 @@ use think\facade\Route;
 
 Route::group('v1/tools', function () {
     Route::post('member/collection', 'memberCollection');
+    Route::post('image/upload', 'imageUpload');
 })->prefix('v1.Tools/')->middleware('AppSessionMiddleware');
 
 return [];
