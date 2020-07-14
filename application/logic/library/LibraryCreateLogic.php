@@ -10,10 +10,12 @@
 namespace app\logic\library;
 
 use app\constants\common\AppHookCode;
+use app\constants\common\LibraryOperateCode;
 use app\constants\model\YLibraryMemberCode;
 use app\entity\model\YLibraryEntity;
 use app\exception\AppException;
 use app\extend\common\AppHook;
+use app\extend\library\LibraryOperateLog;
 use app\kernel\model\YLibraryModel;
 use app\kernel\validate\library\LibraryValidate;
 use app\logic\extend\BaseLogic;
@@ -62,6 +64,9 @@ class LibraryCreateLogic extends BaseLogic {
         $this->libraryEntity = $libraryInfo->toEntity();
 
         AppHook::listen(AppHookCode::LIBRARY_CREATED, $this->libraryEntity);
+
+        // 文档库操作日志
+        LibraryOperateLog::record($this->libraryEntity->id, LibraryOperateCode::LIBRARY_CREATE, '', $this->libraryEntity->toArray());
 
         return $this;
     }

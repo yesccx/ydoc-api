@@ -9,12 +9,15 @@
 
 namespace app\logic\libraryManager;
 
+use app\constants\common\LibraryOperateCode;
 use app\constants\model\YLibraryMemberCode;
 use app\entity\model\YLibraryMemberEntity;
 use app\exception\AppException;
+use app\extend\library\LibraryOperateLog;
 use app\kernel\model\YLibraryMemberModel;
 use app\logic\extend\BaseLogic;
 use app\service\library\LibraryService;
+use app\service\UserService;
 
 class LibraryMemberStatusModifyLogic extends BaseLogic {
 
@@ -77,6 +80,12 @@ class LibraryMemberStatusModifyLogic extends BaseLogic {
         if (empty($updateRes)) {
             throw new AppException('修改失败');
         }
+
+        // 文档库操作日志
+        $userInfo = UserService::getUserInfo($this->libraryMemberEntity->uid, 'nickname');
+        LibraryOperateLog::record(
+            $this->libraryMemberEntity->library_id, LibraryOperateCode::LIBRARY_MEMBER_STATUS_MODIFY, '用户：' . $userInfo['nickname'], $this->libraryMemberEntity->toArray()
+        );
 
         return $this;
     }

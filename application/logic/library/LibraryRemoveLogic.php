@@ -17,6 +17,8 @@ use app\kernel\validate\library\LibraryValidate;
 use app\logic\extend\BaseLogic;
 use app\service\UserService;
 use app\utils\user\UserPasswordHandler;
+use app\extend\library\LibraryOperateLog;
+use app\constants\common\LibraryOperateCode;
 
 class LibraryRemoveLogic extends BaseLogic {
 
@@ -87,6 +89,9 @@ class LibraryRemoveLogic extends BaseLogic {
 
         // 后续的清理动作在文档库删除事件中进行
         AppHook::listen(AppHookCode::LIBRARY_REMOVED, $this->libraryId, false, false);
+
+        // 文档库操作日志
+        LibraryOperateLog::record($this->libraryId, LibraryOperateCode::LIBRARY_REMOVE);
 
         return $this;
     }

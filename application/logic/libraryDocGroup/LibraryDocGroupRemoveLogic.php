@@ -9,8 +9,10 @@
 
 namespace app\logic\libraryDocGroup;
 
+use app\constants\common\LibraryOperateCode;
 use app\entity\model\YLibraryDocGroupEntity;
 use app\exception\AppException;
+use app\extend\library\LibraryOperateLog;
 use app\kernel\model\YLibraryDocGroupModel;
 use app\kernel\model\YLibraryDocModel;
 use app\logic\extend\BaseLogic;
@@ -97,10 +99,17 @@ class LibraryDocGroupRemoveLogic extends BaseLogic {
             $this->deepRemoveChildren($this->libraryDocGroupEntity->id, true);
         }
 
+        $docGroupInfo = LibraryDocGroupService::getLibraryDocGroupInfo($this->libraryDocGroupEntity->id, 'id,library_id,name');
+
         $deleteRes = YLibraryDocGroupModel::where(['id' => $this->libraryDocGroupEntity->id])->softDelete();
         if (empty($deleteRes)) {
             throw new AppException('删除失败');
         }
+
+        // 文档库操作日志
+        LibraryOperateLog::record(
+            $docGroupInfo['library_id'], LibraryOperateCode::LIBRARY_DOC_GROUP_REMOVE, '文档分组：' . $docGroupInfo['name'], $docGroupInfo->toArray()
+        );
 
         return $this;
     }

@@ -9,10 +9,13 @@
 
 namespace app\logic\libraryDocGroup;
 
+use app\constants\common\LibraryOperateCode;
 use app\entity\model\YLibraryDocGroupEntity;
 use app\exception\AppException;
+use app\extend\library\LibraryOperateLog;
 use app\kernel\model\YLibraryDocGroupModel;
 use app\logic\extend\BaseLogic;
+use app\service\library\LibraryDocGroupService;
 
 class LibraryDocGroupSortLogic extends BaseLogic {
 
@@ -78,6 +81,12 @@ class LibraryDocGroupSortLogic extends BaseLogic {
         if (empty($updateRes)) {
             throw new AppException('修改失败，请重试');
         }
+
+        // 文档库操作日志
+        $docGroupInfo = LibraryDocGroupService::getLibraryDocGroupInfo($libraryDocGroupEntity->id, 'id,library_id,name');
+        LibraryOperateLog::record(
+            $docGroupInfo['library_id'], LibraryOperateCode::LIBRARY_DOC_GROUP_MODIFY, '文档分组：' . $docGroupInfo['name'], $docGroupInfo->toArray()
+        );
 
         return $this;
     }

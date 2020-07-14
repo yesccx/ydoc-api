@@ -154,6 +154,8 @@ class LibraryCenterController extends AppBaseController {
      * 文档库转让
      */
     public function libraryTransfer() {
+        LibraryMemberOperate::checkOperate(LibraryMemberOperateCode::LIBRARY__TRANSFER);
+
         $libraryId = $this->request->libraryId;
         $memberId = $this->input('member_id/d', 0);
         $password = $this->input('password/s', '');

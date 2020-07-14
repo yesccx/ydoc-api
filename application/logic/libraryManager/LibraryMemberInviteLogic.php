@@ -10,12 +10,14 @@
 namespace app\logic\libraryManager;
 
 use app\constants\common\AppHookCode;
+use app\constants\common\LibraryOperateCode;
 use app\constants\model\YLibraryMemberCode;
 use app\entity\model\YLibraryEntity;
 use app\entity\model\YLibraryMemberEntity;
 use app\entity\model\YUserEntity;
 use app\exception\AppException;
 use app\extend\common\AppHook;
+use app\extend\library\LibraryOperateLog;
 use app\kernel\model\YLibraryMemberModel;
 use app\logic\extend\BaseLogic;
 use app\service\library\LibraryGroupService;
@@ -129,6 +131,18 @@ class LibraryMemberInviteLogic extends BaseLogic {
         $this->libraryMemberEntity = $libraryMemberInfo->toEntity();
 
         AppHook::listen(AppHookCode::LIBRARY_INVITED, $this->libraryMemberEntity);
+
+        // 文档库操作日志
+        if ($libraryMemberEntity->urole === YLibraryMemberCode::ROLE__CREATOR) {
+            LibraryOperateLog::record(
+                $libraryMemberEntity->library_id, LibraryOperateCode::LIBRARY_INVITE, '初始化创始人', $this->libraryMemberEntity->toArray()
+            );
+        } else {
+            $userInfo = UserService::getUserInfo($libraryMemberEntity->uid, 'nickname');
+            LibraryOperateLog::record(
+                $libraryMemberEntity->library_id, LibraryOperateCode::LIBRARY_INVITE, '用户：' . $userInfo['nickname'], $this->libraryMemberEntity->toArray()
+            );
+        }
 
         return $this;
     }

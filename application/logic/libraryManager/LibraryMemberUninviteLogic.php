@@ -10,13 +10,16 @@
 namespace app\logic\libraryManager;
 
 use app\constants\common\AppHookCode;
+use app\constants\common\LibraryOperateCode;
 use app\constants\model\YLibraryMemberCode;
 use app\entity\model\YLibraryMemberEntity;
 use app\exception\AppException;
 use app\extend\common\AppHook;
+use app\extend\library\LibraryOperateLog;
 use app\kernel\model\YLibraryMemberModel;
 use app\logic\extend\BaseLogic;
 use app\service\library\LibraryService;
+use app\service\UserService;
 
 class LibraryMemberUninviteLogic extends BaseLogic {
 
@@ -64,6 +67,12 @@ class LibraryMemberUninviteLogic extends BaseLogic {
         }
 
         AppHook::listen(AppHookCode::LIBRARY_MEMBER_UNINVITE, $this->libraryMemberEntity);
+
+        // 文档库操作日志
+        $userInfo = UserService::getUserInfo($this->libraryMemberEntity->uid, 'nickname');
+        LibraryOperateLog::record(
+            $this->libraryMemberEntity->library_id, LibraryOperateCode::LIBRARY_UNINVITE, '用户：' . $userInfo['nickname'], $this->libraryMemberEntity->toArray()
+        );
 
         return $this;
     }

@@ -10,10 +10,12 @@
 namespace app\logic\libraryDoc;
 
 use app\constants\common\AppHookCode;
+use app\constants\common\LibraryOperateCode;
 use app\entity\model\YLibraryDocEntity;
 use app\entity\model\YLibraryDocHistoryEntity;
 use app\exception\AppException;
 use app\extend\common\AppHook;
+use app\extend\library\LibraryOperateLog;
 use app\kernel\model\YLibraryDocModel;
 use app\kernel\validate\library\LibraryDocValidate;
 use app\logic\extend\BaseLogic;
@@ -64,6 +66,11 @@ class LibraryDocModifyLogic extends BaseLogic {
         if (empty($libraryDoc)) {
             throw new AppException('未知错误');
         }
+
+        // 文档库操作日志
+        LibraryOperateLog::record(
+            $libraryDocEntity->library_id, LibraryOperateCode::LIBRARY_DOC_MODIFY, '文档：' . $libraryDocEntity->title, $libraryDocEntity->toArray()
+        );
 
         return $this;
     }

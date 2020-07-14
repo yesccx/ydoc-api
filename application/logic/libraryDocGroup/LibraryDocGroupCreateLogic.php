@@ -9,9 +9,11 @@
 
 namespace app\logic\libraryDocGroup;
 
+use app\constants\common\LibraryOperateCode;
 use app\entity\model\YLibraryDocGroupEntity;
 use app\exception\AppException;
 use app\extend\common\AppQuery;
+use app\extend\library\LibraryOperateLog;
 use app\kernel\model\YLibraryDocGroupModel;
 use app\kernel\model\YLibraryDocModel;
 use app\kernel\validate\library\LibraryDocGroupValidate;
@@ -87,6 +89,11 @@ class LibraryDocGroupCreateLogic extends BaseLogic {
         }
 
         $this->libraryDocGroupEntity = $group->toEntity();
+
+        // 文档库操作日志
+        LibraryOperateLog::record(
+            $this->libraryDocGroupEntity->library_id, LibraryOperateCode::LIBRARY_DOC_GROUP_CREATE, '文档分组：' . $this->libraryDocGroupEntity->name, $this->libraryDocGroupEntity->toArray()
+        );
 
         return $this;
     }

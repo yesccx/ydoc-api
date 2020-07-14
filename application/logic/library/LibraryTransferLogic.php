@@ -9,10 +9,12 @@
 
 namespace app\logic\library;
 
+use app\constants\common\LibraryOperateCode;
 use app\constants\model\YLibraryMemberCode;
 use app\entity\model\YLibraryEntity;
 use app\entity\model\YLibraryMemberEntity;
 use app\exception\AppException;
+use app\extend\library\LibraryOperateLog;
 use app\kernel\model\YLibraryMemberModel;
 use app\kernel\model\YLibraryModel;
 use app\logic\extend\BaseLogic;
@@ -120,6 +122,10 @@ class LibraryTransferLogic extends BaseLogic {
         if (empty($transferRes) || empty($roleRes) || empty($lastRoleRes)) {
             throw new AppException('未知错误');
         }
+
+        // 文档库操作日志
+        $userInfo = UserService::getUserInfo($this->libraryMemberEntity->uid, 'nickname');
+        LibraryOperateLog::record($this->libraryEntity->id, LibraryOperateCode::LIBRARY_TRANSFER, '新总管理：' . $userInfo['nickname']);
 
         return $this;
     }

@@ -9,8 +9,10 @@
 
 namespace app\logic\libraryDocGroup;
 
+use app\constants\common\LibraryOperateCode;
 use app\entity\model\YLibraryDocGroupEntity;
 use app\exception\AppException;
+use app\extend\library\LibraryOperateLog;
 use app\kernel\model\YLibraryDocGroupModel;
 use app\kernel\validate\library\LibraryDocGroupValidate;
 use app\logic\extend\BaseLogic;
@@ -58,6 +60,11 @@ class LibraryDocGroupModifyLogic extends BaseLogic {
         if (empty($updateRes)) {
             throw new AppException('修改失败');
         }
+
+        // 文档库操作日志
+        LibraryOperateLog::record(
+            $libraryDocGroupEntity->library_id, LibraryOperateCode::LIBRARY_DOC_GROUP_MODIFY, '文档分组：' . $libraryDocGroupEntity->name, $libraryDocGroupEntity->toArray()
+        );
 
         return $this;
     }

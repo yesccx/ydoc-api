@@ -20,7 +20,7 @@ class AppResponse {
      * @return void
      */
     public static function data($data) {
-        if ($data instanceof \ArrayAccess) {
+        if ($data instanceof \ArrayAccess || $data instanceof AppPagination) {
             $data = $data->toArray();
         }
         return self::handleResponse(AppResponseCode::SUCCESS, 'ok', $data);

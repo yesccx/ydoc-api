@@ -9,11 +9,14 @@
 
 namespace app\logic\libraryDoc;
 
+use app\constants\common\LibraryOperateCode;
 use app\entity\model\YLibraryDocEntity;
 use app\exception\AppException;
+use app\extend\library\LibraryOperateLog;
 use app\kernel\model\YLibraryDocGroupModel;
 use app\kernel\model\YLibraryDocModel;
 use app\logic\extend\BaseLogic;
+use app\service\library\LibraryDocService;
 
 class LibraryDocSortLogic extends BaseLogic {
 
@@ -79,6 +82,12 @@ class LibraryDocSortLogic extends BaseLogic {
         if (empty($updateRes)) {
             throw new AppException('修改失败，请重试');
         }
+
+        // 文档库操作日志
+        $docInfo = LibraryDocService::getLibraryDocInfo($libraryDocEntity->id, 'library_id,title');
+        LibraryOperateLog::record(
+            $docInfo['library_id'], LibraryOperateCode::LIBRARY_DOC_MODIFY, '文档：' . $docInfo['title'], $docInfo
+        );
 
         return $this;
     }

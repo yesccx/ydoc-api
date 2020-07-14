@@ -16,6 +16,8 @@ use app\extend\common\AppHook;
 use app\kernel\model\YLibraryModel;
 use app\kernel\validate\library\LibraryValidate;
 use app\logic\extend\BaseLogic;
+use app\extend\library\LibraryOperateLog;
+use app\constants\common\LibraryOperateCode;
 
 class LibraryModifyLogic extends BaseLogic {
 
@@ -58,6 +60,9 @@ class LibraryModifyLogic extends BaseLogic {
         }
 
         AppHook::listen(AppHookCode::LIBRARY_MODIFYED, $libraryEntity);
+
+        // 文档库操作日志
+        LibraryOperateLog::record($libraryEntity->id, LibraryOperateCode::LIBRARY_MODIFY, '修改基本信息', $libraryEntity->toArray());
 
         return $this;
     }
