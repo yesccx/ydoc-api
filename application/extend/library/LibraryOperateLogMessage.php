@@ -24,14 +24,14 @@ class LibraryOperateLogMessage {
         LibraryOperateCode::LIBRARY_REMOVE               => '删除文档库',
         LibraryOperateCode::LIBRARY_INVITE               => '邀请用户加入文档库',
         LibraryOperateCode::LIBRARY_TRANSFER             => '转让文档库',
-        LibraryOperateCode::LIBRARY_UNINVITE             => '将用户从文档库移除',
-        LibraryOperateCode::LIBRARY_MEMBER_STATUS_MODIFY => '变更文档库成员状态',
-        LibraryOperateCode::LIBRARY_DOC_CREATE           => '创建文档',
-        LibraryOperateCode::LIBRARY_DOC_MODIFY           => '修改文档',
-        LibraryOperateCode::LIBRARY_DOC_REMOVE           => '删除文档',
-        LibraryOperateCode::LIBRARY_DOC_GROUP_CREATE     => '创建文档分组',
-        LibraryOperateCode::LIBRARY_DOC_GROUP_MODIFY     => '修改文档分组',
-        LibraryOperateCode::LIBRARY_DOC_GROUP_REMOVE     => '删除文档分组',
+        LibraryOperateCode::LIBRARY_UNINVITE             => '将用户从文档库移除，来自文档库',
+        LibraryOperateCode::LIBRARY_MEMBER_STATUS_MODIFY => '变更文档库成员状态，来自文档库',
+        LibraryOperateCode::LIBRARY_DOC_CREATE           => '创建文档，来自文档库',
+        LibraryOperateCode::LIBRARY_DOC_MODIFY           => '修改文档，来自文档库',
+        LibraryOperateCode::LIBRARY_DOC_REMOVE           => '删除文档，来自文档库',
+        LibraryOperateCode::LIBRARY_DOC_GROUP_CREATE     => '创建文档分组，来自文档库',
+        LibraryOperateCode::LIBRARY_DOC_GROUP_MODIFY     => '修改文档分组，来自文档库',
+        LibraryOperateCode::LIBRARY_DOC_GROUP_REMOVE     => '删除文档分组，来自文档库',
     ];
 
     /**

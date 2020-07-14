@@ -54,7 +54,7 @@ class LibraryModifyLogic extends BaseLogic {
         $libraryEntity = $this->libraryEntity;
         $libraryEntity->update_time = time();
 
-        $libraryInfo = YLibraryModel::update($libraryEntity->toArray(), ['id' => $libraryEntity->id], 'name,desc,update_time');
+        $libraryInfo = YLibraryModel::update($libraryEntity->toArray(), ['id' => $libraryEntity->id], 'name,desc,update_time,cover');
         if (empty($libraryInfo)) {
             throw new AppException('文档库修改失败，可能操作过快');
         }

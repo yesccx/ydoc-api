@@ -12,8 +12,8 @@ namespace app\extend;
 use app\entity\model\YUserEntity;
 use app\exception\AppException;
 use app\extend\common\AppQuery;
+use app\extend\GenerateLetterImage;
 use app\kernel\model\YUserModel;
-use YoHang88\LetterAvatar\LetterAvatar;
 
 class UserAvatar {
 
@@ -87,7 +87,7 @@ class UserAvatar {
         // 初始化目录
         checkMkdir(pathinfo($fullName, PATHINFO_DIRNAME));
 
-        return (new LetterAvatar($name, 'circle', 480))->saveAs($fullName);
+        return GenerateLetterImage::make()->run($name, $fullName, 400);
     }
 
     /**

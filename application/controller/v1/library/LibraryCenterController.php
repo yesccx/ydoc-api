@@ -37,7 +37,7 @@ class LibraryCenterController extends AppBaseController {
      */
     public function libraryInfo() {
         $libraryId = $this->request->libraryId;
-        $libraryInfo = LibraryService::getLibraryInfo($libraryId, 'id,uid,team_id,name,desc,create_time,update_time');
+        $libraryInfo = LibraryService::getLibraryInfo($libraryId, 'id,uid,team_id,name,desc,create_time,update_time,cover');
         return $this->responseData($libraryInfo->toArray());
     }
 
@@ -63,7 +63,7 @@ class LibraryCenterController extends AppBaseController {
         // 追加文档库信息
         if (!empty($pageList['list'])) {
             $pageList['list']->load(['library_info' => function ($squery) {
-                $squery->field('id,uid,team_id,name,desc,sort,create_time');
+                $squery->field('id,uid,team_id,name,desc,sort,create_time,cover');
             }]);
         }
 
@@ -102,7 +102,7 @@ class LibraryCenterController extends AppBaseController {
     public function libraryCreate() {
         $libraryGroupId = $this->input('group_id/d', 0);
 
-        $libraryEntity = YLibraryEntity::inputMake(['name/s' => '', 'desc/s' => '']);
+        $libraryEntity = YLibraryEntity::inputMake(['name/s' => '', 'desc/s' => '', 'cover/s' => '']);
         $libraryEntity->uid = $this->uid;
 
         $libraryCreate = LibraryCreateLogic::make();
@@ -119,7 +119,7 @@ class LibraryCenterController extends AppBaseController {
     public function libraryModify() {
         LibraryMemberOperate::checkOperate(LibraryMemberOperateCode::LIBRARY__MODIFY);
 
-        $libraryEntity = YLibraryEntity::inputMake(['name/s' => '', 'desc/s' => '']);
+        $libraryEntity = YLibraryEntity::inputMake(['name/s' => '', 'desc/s' => '', 'cover/s' => '']);
         $libraryEntity->id = $this->request->libraryId;
 
         $libraryModify = LibraryModifyLogic::make();

@@ -44,7 +44,7 @@ class LibraryManagerController extends AppBaseController {
     public function libraryManagerInfo() {
         $libraryId = $this->request->libraryId;
 
-        $libraryInfo = LibraryService::getLibraryInfo($libraryId, 'id,uid,team_id,name,desc,create_time,update_time');
+        $libraryInfo = LibraryService::getLibraryInfo($libraryId, 'id,uid,team_id,name,desc,create_time,update_time,cover');
         $libraryMember = LibraryService::getLibraryMemberInfo($libraryId, $this->uid, 'group_id,uid,urole,apply_time');
 
         return $this->responseData([

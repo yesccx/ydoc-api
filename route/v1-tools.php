@@ -12,6 +12,7 @@ use think\facade\Route;
 Route::group('v1/tools', function () {
     Route::post('member/collection', 'memberCollection');
     Route::post('image/upload', 'imageUpload');
+    Route::post('image/random-tmp', 'imageRandomTmp');
 })->prefix('v1.Tools/')->middleware('AppSessionMiddleware');
 
 return [];

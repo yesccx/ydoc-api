@@ -11,6 +11,7 @@ namespace app\controller\v1;
 
 use app\extend\common\AppQuery;
 use app\extend\QiniuManager;
+use app\extend\RandomTmpImage;
 use app\kernel\base\AppBaseController;
 use app\service\UserService;
 
@@ -41,6 +42,18 @@ class ToolsController extends AppBaseController {
     public function imageUpload() {
         $imageInfo = QiniuManager::make()->onlyImage()->upload();
         return $this->responseData($imageInfo);
+    }
+
+    /**
+     * 生成图片（随机临时的）
+     */
+    public function imageRandomTmp() {
+        $key = $this->input('key/s', '');
+        $key = $key ?: 'YDOC';
+
+        $imageUrl = RandomTmpImage::make()->generate($key);
+
+        return $this->responseData(['url' => $imageUrl]);
     }
 
 }

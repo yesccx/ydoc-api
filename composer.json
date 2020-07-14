@@ -19,8 +19,8 @@
         "php": ">=5.6.0",
         "topthink/framework": "5.1.*",
         "firebase/php-jwt": "^5.0",
-        "yohang88/letter-avatar": "^2.2",
-        "qiniu/php-sdk": "^7.2"
+        "qiniu/php-sdk": "^7.2",
+        "lasserafn/php-initial-avatar-generator": "^4.1"
     },
     "autoload": {
         "psr-4": {
@@ -36,7 +36,7 @@
     "repositories": {
         "packagist": {
             "type": "composer",
-            "url": "https://mirrors.aliyun.com/composer/"
+            "url": "https://mirrors.cloud.tencent.com/composer/"
         }
     }
 }
