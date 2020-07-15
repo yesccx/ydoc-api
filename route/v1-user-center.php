@@ -12,6 +12,8 @@ use think\facade\Route;
 Route::group('v1/user/center', function () {
     Route::post('user-info', 'userInfo');
     Route::post('user-logout', 'userLogout');
+    Route::post('user-nickname-modify', 'userNicknameModify');
+    Route::post('user-password-modify', 'userPasswordModify');
 })->prefix('v1.user.UserCenter/')->middleware('AppSessionMiddleware');
 
 return [];

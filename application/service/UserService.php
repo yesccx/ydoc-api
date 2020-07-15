@@ -11,6 +11,7 @@ namespace app\service;
 
 use app\exception\AppException;
 use app\kernel\model\YUserModel;
+use app\utils\user\UserPasswordHandler;
 
 class UserService {
 
@@ -52,6 +53,40 @@ class UserService {
         }
 
         return $userCollection;
+    }
+
+    /**
+     * 修改用户昵称
+     *
+     * @param int $uid 用户ui
+     * @param string $nickname 新昵称
+     * @return mixed
+     * @throws AppException
+     */
+    public static function modifyUserNickname($uid, $nickname) {
+        $updateRes = YUserModel::update(['nickname' => $nickname], ['id' => $uid]);
+        if (empty($updateRes)) {
+            throw new AppException('修改失败');
+        }
+        return true;
+    }
+
+    /**
+     * 验证用户登录密码
+     *
+     * @param int $uid 用户uid
+     * @param string $password 待验证的登录密码
+     * @return mixed
+     * @throws AppException
+     */
+    public static function checkUserPassword($uid, $password) {
+        // 查询用户
+        $user = YUserModel::findOne(['id' => $uid], 'id,password,password_salt,status');
+        if (empty($user)) {
+            return false;
+        }
+
+        return UserPasswordHandler::check($user['password'], $password, $user['password_salt']);
     }
 
 }

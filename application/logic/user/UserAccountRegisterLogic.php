@@ -14,7 +14,7 @@ use app\entity\model\YUserEntity;
 use app\exception\AppException;
 use app\extend\common\AppHook;
 use app\kernel\model\YUserModel;
-use app\kernel\validate\user\UserRegitserValidate;
+use app\kernel\validate\user\UserValidate;
 use app\logic\extend\BaseLogic;
 use app\utils\user\UserPasswordHandler;
 
@@ -40,7 +40,7 @@ class UserAccountRegisterLogic extends BaseLogic {
         }
 
         // 校验数据有效性
-        UserRegitserValidate::checkOrException($userEntity->toArray());
+        UserValidate::checkOrException($userEntity->toArray(), 'accountRegister');
 
         $this->userEntity = $userEntity;
 
