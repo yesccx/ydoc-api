@@ -217,4 +217,17 @@ CREATE TABLE `y_library_log` (
   `delete_time` int(10) UNSIGNED NOT NULL DEFAULT '0' COMMENT '删除时间 0表示未删除',
   `create_time` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '操作时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT '文档库相关日志';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT '文档库相关日志表';
+
+DROP TABLE IF EXISTS `y_user_message`;
+CREATE TABLE `y_user_message` (
+  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '自增id',
+  `uid` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '用户uid',
+  `title` varchar(64) NOT NULL DEFAULT '' COMMENT '标题',
+  `content` text NOT NULL DEFAULT '' COMMENT '内容',
+  `status` tinyint(1) UNSIGNED NOT NULL DEFAULT 0 COMMENT '已读状态 0：未读  1：已读',
+  `delete_time` int(10) UNSIGNED NOT NULL DEFAULT '0' COMMENT '删除时间 0表示未删除',
+  `read_time` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '阅读时间',
+  `create_time` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '创建时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT '用户消息表';
