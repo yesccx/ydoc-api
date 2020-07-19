@@ -83,7 +83,7 @@ class LibraryCenterController extends AppBaseController {
         });
 
         // 获取列表数据
-        $query->field('id,library_id,library_name,group_id,uid')->order('id', 'desc');
+        $query->field('id,library_id,library_name,group_id,uid,sort')->order('id', 'desc');
         $collection = LibraryService::getMemberLibraryCollection($this->uid, $query);
 
         // 追加文档库信息
@@ -107,7 +107,7 @@ class LibraryCenterController extends AppBaseController {
 
         $libraryCreate = LibraryCreateLogic::make();
         Db::transaction(function () use ($libraryCreate, $libraryEntity, $libraryGroupId) {
-            $libraryCreate->useLibrary($libraryEntity)->create()->initLibraryMember($libraryGroupId);
+            $libraryCreate->useLibrary($libraryEntity, $libraryGroupId)->create()->initLibraryMember($libraryGroupId);
         });
 
         return $this->responseData($libraryCreate->libraryEntity->toArray());

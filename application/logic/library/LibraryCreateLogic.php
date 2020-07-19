@@ -15,7 +15,9 @@ use app\constants\model\YLibraryMemberCode;
 use app\entity\model\YLibraryEntity;
 use app\exception\AppException;
 use app\extend\common\AppHook;
+use app\extend\common\AppQuery;
 use app\extend\library\LibraryOperateLog;
+use app\kernel\model\YLibraryMemberModel;
 use app\kernel\model\YLibraryModel;
 use app\kernel\validate\library\LibraryValidate;
 use app\logic\extend\BaseLogic;
@@ -34,16 +36,41 @@ class LibraryCreateLogic extends BaseLogic {
      * 使用文档库信息
      *
      * @param YLibraryEntity $libraryEntity
+     * @param int $libraryGroupId 文档库分组id
      * @return $this
      * @throws AppException
      */
-    public function useLibrary(YLibraryEntity $libraryEntity) {
+    public function useLibrary(YLibraryEntity $libraryEntity, $libraryGroupId = 0) {
         // 校验数据合法性
         LibraryValidate::checkOrException($libraryEntity->toArray(), 'create');
 
         $this->libraryEntity = $libraryEntity;
 
+        // 计算新分组排序位置
+        if (!$libraryEntity->hasFields('sort') || $libraryEntity->sort < 0) {
+            $this->libraryEntity->sort = $this->computeDocSort($libraryGroupId);
+        }
+
         return $this;
+    }
+
+    /**
+     * 计算排序
+     * PS: 取至文档库未尾分组排序值 + 步长
+     *
+     * @param int $libraryGroupId 文档库分组id
+     * @param int $step 默认间隔步长
+     * @return int sort
+     */
+    protected function computeDocSort($libraryGroupId = 0, $step = 10000) {
+        // 获取末尾分组排序值
+        $lastGroup = YLibraryMemberModel::findOne(AppQuery::make(
+            ['uid' => $this->libraryEntity->uid, 'group_id' => $libraryGroupId],
+            'sort', 'sort desc'
+        ));
+        $lastGroupSort = $lastGroup ? intval($lastGroup['sort'] + $step) : 0;
+
+        return empty($lastGroup) ? $step : $lastGroupSort;
     }
 
     /**
@@ -79,6 +106,8 @@ class LibraryCreateLogic extends BaseLogic {
      * @throws AppException
      */
     public function initLibraryMember($libraryGroupId = 0) {
+        $libraryGroupId = $libraryGroupId ?: $this->libraryGroupId;
+
         // 将创建人加入文档库
         try {
             LibraryMemberInviteLogic::make()
