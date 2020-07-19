@@ -33,6 +33,13 @@ class LibraryCreateLogic extends BaseLogic {
     public $libraryEntity;
 
     /**
+     * 文档库分组id
+     *
+     * @var int
+     */
+    protected $libraryGroupId = 0;
+
+    /**
      * 使用文档库信息
      *
      * @param YLibraryEntity $libraryEntity
@@ -50,6 +57,8 @@ class LibraryCreateLogic extends BaseLogic {
         if (!$libraryEntity->hasFields('sort') || $libraryEntity->sort < 0) {
             $this->libraryEntity->sort = $this->computeDocSort($libraryGroupId);
         }
+
+        $this->libraryGroupId = $libraryGroupId;
 
         return $this;
     }
@@ -106,7 +115,7 @@ class LibraryCreateLogic extends BaseLogic {
      * @throws AppException
      */
     public function initLibraryMember($libraryGroupId = 0) {
-        $libraryGroupId = $libraryGroupId ?: $this->libraryGroupId;
+        $libraryGroupId = $this->libraryGroupId ?: $this->libraryGroupId;
 
         // 将创建人加入文档库
         try {

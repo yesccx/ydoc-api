@@ -107,7 +107,7 @@ class LibraryCenterController extends AppBaseController {
 
         $libraryCreate = LibraryCreateLogic::make();
         Db::transaction(function () use ($libraryCreate, $libraryEntity, $libraryGroupId) {
-            $libraryCreate->useLibrary($libraryEntity, $libraryGroupId)->create()->initLibraryMember($libraryGroupId);
+            $libraryCreate->useLibrary($libraryEntity, $libraryGroupId)->create()->initLibraryMember();
         });
 
         return $this->responseData($libraryCreate->libraryEntity->toArray());
