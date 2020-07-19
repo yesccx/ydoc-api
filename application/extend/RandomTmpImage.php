@@ -82,7 +82,7 @@ class RandomTmpImage {
      * @return string 图片外链
      */
     protected function getImageUrl($id) {
-        return APP_ROOT_TMP_STATIC_URL . "/{$id}.png";
+        return APP_ROOT_STATIC_TMP_URL . "/{$id}.png";
     }
 
 }

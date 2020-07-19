@@ -54,9 +54,9 @@ class UserAvatar {
      * @return string
      */
     public function getUserAvatarUrl() {
-        $avatarUrl = APP_ROOT_URL . '/avatar/normal.png';
+        $avatarUrl = APP_ROOT_STATIC_URL . '/avatar/normal.png';
         if (!empty($this->userEntity->avatar) && file_exists($this->getAvatarFullName($this->userEntity->avatar))) {
-            $avatarUrl = APP_ROOT_URL . '/' . $this->getAvatarFullName($this->userEntity->avatar, 'avatar');
+            $avatarUrl = APP_ROOT_STATIC_URL . '/' . $this->getAvatarFullName($this->userEntity->avatar, 'avatar');
         }
 
         return $avatarUrl;
