@@ -25,5 +25,8 @@ define('APP_PATH', Env::get('app_path'));
 // 应用根url（带协议头）
 define('APP_ROOT_URL', Env::get('APP.ROOT_URL', ''));
 
+// 静态资源根url
+define('APP_ROOT_STATIC_URL', APP_ROOT_URL . '/public');
+
 // 静态临时资源根url
-define('APP_ROOT_TMP_STATIC_URL', APP_ROOT_URL . '/tmp');
+define('APP_ROOT_STATIC_TMP_URL', APP_ROOT_STATIC_URL . '/tmp');
