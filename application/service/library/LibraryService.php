@@ -9,9 +9,13 @@
 
 namespace app\service\library;
 
+use app\constants\module\LibraryPreferenceCode;
 use app\extend\common\AppPagination;
+use app\extend\library\LibraryPreferenceHandler;
+use app\kernel\model\YLibraryConfigModel;
 use app\kernel\model\YLibraryMemberModel;
 use app\kernel\model\YLibraryModel;
+use app\kernel\model\YUserConfigModel;
 use think\db\Query;
 
 class LibraryService {
@@ -74,6 +78,71 @@ class LibraryService {
     public static function getLibraryMemberInfo($libraryId, $memberId, $query = null) {
         $query = YLibraryMemberModel::useQuery($query)->where(['library_id' => $libraryId, 'uid' => $memberId]);
         return $query->find();
+    }
+
+    /**
+     * 获取文档库偏好设置
+     *
+     * @param int $libraryId 文档库id
+     * @return array
+     */
+    public static function getLibraryPreference($libraryId) {
+        $libraryConfig = YLibraryConfigModel::where(['uid' => 0, 'library_id' => $libraryId])->field('config')->find();
+        if (!empty($libraryConfig) && $libraryConfig['config'][LibraryPreferenceCode::USE_PREFERENCE] == 1) {
+            $libraryConfig = $libraryConfig['config'];
+        } else {
+            $libraryConfig = [];
+        }
+        return LibraryPreferenceHandler::handle($libraryConfig);
+    }
+
+    /**
+     * 获取文档库成员偏好设置
+     *
+     * @param int $libraryId 文档库id
+     * @param int $memberId 成员id
+     * @return array
+     */
+    public static function getLibraryMemberPreference($libraryId, $memberId) {
+        $resUseConfig = [];
+
+        // 获取文档库偏好设置
+        $libraryConfig = YLibraryConfigModel::where(['uid' => 0, 'library_id' => $libraryId])->field('config')->find();
+        if (!empty($libraryConfig) && $libraryConfig['config'][LibraryPreferenceCode::USE_PREFERENCE] == 1) {
+            $libraryConfig = $libraryConfig['config'];
+        } else {
+            $libraryConfig = [];
+        }
+
+        // 获取成员偏好设置
+        $libraryMemberConfig = YLibraryConfigModel::where(['uid' => $memberId, 'library_id' => $libraryId])->field('config')->find();
+        if (!empty($libraryMemberConfig) && $libraryMemberConfig['config'][LibraryPreferenceCode::USE_PREFERENCE] == 1) {
+            $libraryMemberConfig = $libraryMemberConfig['config'];
+
+            // 成员偏好设置仅支持部分（多余的要删除）
+            unset($libraryMemberConfig[LibraryPreferenceCode::LIBRARY_DEFAULT_STYLE]);
+        } else {
+            $libraryMemberConfig = [];
+        }
+
+        // 合并偏好设置
+        $resUseConfig = array_merge($libraryConfig, $libraryMemberConfig);
+
+        // 当没有有效的偏好设置或成员没有自定义偏好设置时，取用户偏好设置
+        if (empty($resUseConfig) || empty($libraryMemberConfig)) {
+            $userConfig = YUserConfigModel::where(['uid' => $memberId])->field('config')->find();
+            if (!empty($userConfig) && $userConfig['config'][LibraryPreferenceCode::USE_PREFERENCE] == 1) {
+                $userConfig = $userConfig['config'];
+
+                // 偏好设置仅支持部分（多余的要删除）
+                unset($userConfig[LibraryPreferenceCode::LIBRARY_DEFAULT_STYLE]);
+
+                // 合并偏好设置
+                $resUseConfig = array_merge($libraryConfig, $userConfig);
+            }
+        }
+
+        return LibraryPreferenceHandler::handle($resUseConfig);
     }
 
 }

@@ -31,6 +31,9 @@ class LibraryMemberOperateCode extends BaseCode {
     // 文档库转让
     const LIBRARY__TRANSFER = 'library__transfer';
 
+    // 文档库偏好设置修改
+    const LIBRARY_CONFIG__MODIFY = 'library_config__modify';
+
     // 文档库归档
     const LIBRARY__PERMANENT = 'library__permanent';
 

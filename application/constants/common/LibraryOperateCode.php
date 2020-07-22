@@ -32,6 +32,9 @@ class LibraryOperateCode {
     // 文档库转让
     const LIBRARY_TRANSFER = 'library_transfer';
 
+    // 文档库偏好修改
+    const LIBRARY_CONFIG_MODIFY = 'library_config_modify';
+
     // 文档库文档创建
     const LIBRARY_DOC_CREATE = 'library_doc_create';
 

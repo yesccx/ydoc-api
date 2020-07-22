@@ -13,6 +13,7 @@ use app\constants\module\LibraryMemberOperateCode;
 use app\extend\common\AppPagination;
 use app\extend\common\AppQuery;
 use app\extend\library\LibraryMemberOperate;
+use app\extend\library\LibraryPreferenceHandler;
 use app\kernel\base\AppBaseController;
 use app\logic\libraryManager\LibraryMemberInviteLogic;
 use app\logic\libraryManager\LibraryMemberLibrarySortLogic;
@@ -31,6 +32,7 @@ class LibraryManagerController extends AppBaseController {
             'only' => [
                 'libraryManagerInfo', 'libraryMemberLibrarySort', 'libraryMemberCollection', 'libraryMemberInvite',
                 'libraryMemberUninvite', 'libraryMemberStatusModify', 'libraryMemberRoleModify', 'libraryShareList',
+                'libraryMemberLibraryPreference',
             ],
         ],
         \app\kernel\middleware\library\LibraryManagerShareAuthMiddleware::class => [
@@ -70,6 +72,18 @@ class LibraryManagerController extends AppBaseController {
         });
 
         return $this->responseSuccess('修改成功');
+    }
+
+    /**
+     * 成员文档库预设偏好
+     */
+    public function libraryMemberLibraryPreference() {
+        $libraryId = $this->request->libraryId;
+
+        $memberPreference = LibraryService::getLibraryMemberPreference($libraryId, $this->uid);
+        $memberPreferenceParse = LibraryPreferenceHandler::make()->parse($memberPreference);
+
+        return $this->responseData(['config' => $memberPreference, 'parse' => $memberPreferenceParse]);
     }
 
     /**

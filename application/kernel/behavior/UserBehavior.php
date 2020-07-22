@@ -11,6 +11,7 @@ namespace app\kernel\behavior;
 
 use app\entity\model\YUserEntity;
 use app\extend\UserAvatar;
+use app\extend\library\LibraryPreferenceHandler;
 
 class UserBehavior {
 
@@ -25,6 +26,9 @@ class UserBehavior {
 
         // 初始化用户头像
         (new UserAvatar($userEntity->id))->initUserAvatar();
+
+        // 初始化用户偏好设置参数
+        LibraryPreferenceHandler::initUserConfig($userEntity->id);
     }
 
 }

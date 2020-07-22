@@ -9,10 +9,12 @@
 
 namespace app\controller\v1\library;
 
+use app\constants\module\LibraryPreferenceCode;
 use app\extend\library\LibraryDocGroupTree;
 use app\kernel\base\AppBaseController;
 use app\service\library\LibraryDocGroupService;
 use app\service\library\LibraryDocService;
+use app\service\library\LibraryService;
 use app\service\library\LibraryShareService;
 use app\service\UserService;
 
@@ -22,6 +24,7 @@ class LibraryShareController extends AppBaseController {
      * 分享信息
      */
     public function shareInfo() {
+        $libraryId = $this->request->shareLibraryId;
         $shareId = $this->request->shareId;
         $shareInfo = LibraryShareService::getLibraryShareInfo(
             $shareId, 'id,library_id,uid,doc_id,share_name,share_desc,expire_time,is_protected,create_time,share_code'
@@ -29,6 +32,11 @@ class LibraryShareController extends AppBaseController {
 
         // 分享人信息
         $shareInfo['user_info'] = UserService::getUserInfo($shareInfo['uid'], 'id,avatar,nickname')->append(['avatar_url']);
+
+        // 分享的文档库偏好-视图风格
+        $libraryPreference = LibraryService::getLibraryPreference($libraryId);
+        $libraryPreferenceStyle = $libraryPreference[LibraryPreferenceCode::LIBRARY_DEFAULT_STYLE];
+        $shareInfo['library_style'] = $libraryPreferenceStyle;
 
         // 累计访问量
         LibraryShareService::incShareAccessCount($shareId);

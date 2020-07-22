@@ -231,3 +231,26 @@ CREATE TABLE `y_user_message` (
   `create_time` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '创建时间',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT '用户消息表';
+
+DROP TABLE IF EXISTS `y_user_config`;
+CREATE TABLE `y_user_config` (
+  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '自增id',
+  `uid` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '用户uid',
+  `config` text NOT NULL DEFAULT '' COMMENT '配置信息 json格式',
+  `delete_time` int(10) UNSIGNED NOT NULL DEFAULT '0' COMMENT '删除时间 0表示未删除',
+  `update_time` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '更新时间',
+  `create_time` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '创建时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT '用户配置表';
+
+DROP TABLE IF EXISTS `y_library_config`;
+CREATE TABLE `y_library_config` (
+  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '自增id',
+  `library_id` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '文档库id',
+  `uid` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '用户uid，为0时表示文档库的设置，否则为用户对文档库的设置',
+  `config` text NOT NULL DEFAULT '' COMMENT '配置信息 json格式',
+  `delete_time` int(10) UNSIGNED NOT NULL DEFAULT '0' COMMENT '删除时间 0表示未删除',
+  `update_time` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '更新时间',
+  `create_time` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '创建时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT '文档库配置表';

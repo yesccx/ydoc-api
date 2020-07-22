@@ -24,6 +24,7 @@ class LibraryOperateLogMessage {
         LibraryOperateCode::LIBRARY_REMOVE               => '删除文档库',
         LibraryOperateCode::LIBRARY_INVITE               => '邀请用户加入文档库',
         LibraryOperateCode::LIBRARY_TRANSFER             => '转让文档库',
+        LibraryOperateCode::LIBRARY_CONFIG_MODIFY        => '更新偏好设置，来自文档库',
         LibraryOperateCode::LIBRARY_UNINVITE             => '将用户从文档库移除，来自文档库',
         LibraryOperateCode::LIBRARY_MEMBER_STATUS_MODIFY => '变更文档库成员状态，来自文档库',
         LibraryOperateCode::LIBRARY_DOC_CREATE           => '创建文档，来自文档库',

@@ -14,6 +14,7 @@ use app\entity\model\YLibraryEntity;
 use app\extend\common\AppPagination;
 use app\extend\common\AppQuery;
 use app\extend\library\LibraryMemberOperate;
+use app\extend\library\LibraryPreferenceHandler;
 use app\kernel\base\AppBaseController;
 use app\logic\library\LibraryCreateLogic;
 use app\logic\library\LibraryModifyLogic;
@@ -27,7 +28,7 @@ class LibraryCenterController extends AppBaseController {
     protected $middleware = [
         \app\kernel\middleware\library\LibraryAuthMiddleware::class => [ // 文档库操作鉴权
             'only' => [
-                'libraryInfo', 'libraryModify', 'libraryRemove', 'libraryTransfer',
+                'libraryInfo', 'libraryModify', 'libraryRemove', 'libraryTransfer', 'libraryPreference',
             ],
         ],
     ];

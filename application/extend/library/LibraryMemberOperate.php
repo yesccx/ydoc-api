@@ -57,15 +57,24 @@ class LibraryMemberOperate {
 
     /**
      * 验证操作是否在权限范围内
+     * PS: 支持验证多个操作项
      *
-     * @param string $operate 操作关键字
+     * @param mixed $operate 操作关键字
      * @param bool $catchException 是否捕捉异常
      * @return bool
      * @throws AppException
      */
     public static function checkOperate($operate, $catchException = true) {
         try {
-            return static::make()->check($operate);
+            $validate = static::make();
+
+            if (is_array($operate)) {
+                foreach ($operate as $item) {
+                    $validate->check($item);
+                }
+                return true;
+            }
+            return $validate->check($operate);
         } catch (AppException $e) {
             if ($catchException) {
                 throw $e;
@@ -146,6 +155,7 @@ class LibraryMemberOperate {
                 LibraryMemberOperateCode::LIBRARY_DOC__SORT,
                 LibraryMemberOperateCode::LIBRARY_SHARE__REMOVE,
                 LibraryMemberOperateCode::LIBRARY_SHARE__STATUS_MODIFY,
+                LibraryMemberOperateCode::LIBRARY_CONFIG__MODIFY,
             ],
             YLibraryMemberCode::ROLE__MANAGER => [
                 LibraryMemberOperateCode::LIBRARY__MODIFY,
@@ -163,6 +173,7 @@ class LibraryMemberOperate {
                 LibraryMemberOperateCode::LIBRARY_DOC__SORT,
                 LibraryMemberOperateCode::LIBRARY_SHARE__REMOVE,
                 LibraryMemberOperateCode::LIBRARY_SHARE__STATUS_MODIFY,
+                LibraryMemberOperateCode::LIBRARY_CONFIG__MODIFY,
             ],
             YLibraryMemberCode::ROLE__MEMBER  => [
                 LibraryMemberOperateCode::LIBRARY_DOC_GROUP__CREATE,
