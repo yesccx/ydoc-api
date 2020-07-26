@@ -9,6 +9,7 @@
 
 namespace app\extend\library;
 
+use app\constants\common\LibraryEditorCode;
 use app\constants\module\LibraryPreferenceCode;
 use app\extend\session\AppSession;
 use app\kernel\model\YLibraryConfigModel;
@@ -24,6 +25,7 @@ class LibraryPreferenceHandler {
     public static $defaultConfig = [
         LibraryPreferenceCode::LIBRARY_DEFAULT_STYLE        => 'full',
         LibraryPreferenceCode::LIBRARY_DOC_DEFAULT_TEMPLATE => 0,
+        LibraryPreferenceCode::LIBRARY_DOC_DEFAULT_EDITOR   => LibraryEditorCode::EDITOR_DEFAULT,
         LibraryPreferenceCode::USE_PREFERENCE               => 0,
     ];
 
@@ -48,6 +50,16 @@ class LibraryPreferenceHandler {
         // FIMXE: 获取文档库默认使用模板信息时，可以不做uid限定，可能会在成员间共享（实现方式有待优化）
         $uid = AppSession::make()->getUid();
         return YLibraryDocTemplateModel::where(['id' => $configValue, 'uid' => $uid])->value('name', '');
+    }
+
+    // 解析函数 library_doc_default_editor
+    protected function parseHandle__library_doc_default_editor($configKey, $configValue) {
+        $map = [
+            LibraryEditorCode::EDITOR_HTML     => '富文本编辑器',
+            LibraryEditorCode::EDITOR_MARKDOWN => 'Markdown编辑器',
+            LibraryEditorCode::EDITOR_TEXT     => '纯文本编辑器',
+        ];
+        return $map[$configValue] ?? '';
     }
 
     // 解析函数 library_default_style

@@ -32,7 +32,7 @@ class LibraryDocTemplateController extends AppBaseController {
      */
     public function docTemplateCollection() {
         $collection = LibraryDocTemplateService::getLibraryDocTemplateCollection(
-            $this->uid, 'id,uid,name,introduction,create_time,update_time,content'
+            $this->uid, 'id,uid,name,introduction,create_time,update_time,content,editor'
         );
         return $this->responseData($collection);
     }
@@ -41,7 +41,9 @@ class LibraryDocTemplateController extends AppBaseController {
      * 文档模板创建
      */
     public function docTemplateCreate() {
-        $docTempalteEntity = YLibraryDocTemplateEntity::inputMake(['name/s' => '', 'introduction/s' => '', 'content/s' => '']);
+        $docTempalteEntity = YLibraryDocTemplateEntity::inputMake([
+            'name/s' => '', 'introduction/s' => '', 'content/s' => '', 'editor/s' => '',
+        ]);
         if (empty($docTempalteEntity->name)) {
             return $this->responseError('请给模板定义一个名称');
         }
@@ -61,7 +63,9 @@ class LibraryDocTemplateController extends AppBaseController {
      * 文档模板修改
      */
     public function docTemplateModify() {
-        $docTempalteEntity = YLibraryDocTemplateEntity::inputMake(['name/s' => '', 'introduction/s' => '', 'content/s' => '']);
+        $docTempalteEntity = YLibraryDocTemplateEntity::inputMake([
+            'name/s' => '', 'introduction/s' => '', 'content/s' => '', 'editor/s' => '',
+        ]);
         if (empty($docTempalteEntity->name)) {
             return $this->responseError('请给模板定义一个名称');
         }
@@ -80,7 +84,9 @@ class LibraryDocTemplateController extends AppBaseController {
      */
     public function docTemplateInfo() {
         $docTemplateId = $this->request->libraryDocTemplateId;
-        $docTemplateInfo = LibraryDocTemplateService::getLibraryDocTemplateInfo($docTemplateId, 'id,uid,name,introduction,content,create_time,update_time');
+        $docTemplateInfo = LibraryDocTemplateService::getLibraryDocTemplateInfo(
+            $docTemplateId, 'id,uid,name,introduction,content,create_time,update_time,editor'
+        );
 
         return $this->responseData($docTemplateInfo);
     }

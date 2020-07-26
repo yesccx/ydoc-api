@@ -14,7 +14,6 @@ use app\entity\model\YLibraryEntity;
 use app\extend\common\AppPagination;
 use app\extend\common\AppQuery;
 use app\extend\library\LibraryMemberOperate;
-use app\extend\library\LibraryPreferenceHandler;
 use app\kernel\base\AppBaseController;
 use app\logic\library\LibraryCreateLogic;
 use app\logic\library\LibraryModifyLogic;
@@ -38,7 +37,7 @@ class LibraryCenterController extends AppBaseController {
      */
     public function libraryInfo() {
         $libraryId = $this->request->libraryId;
-        $libraryInfo = LibraryService::getLibraryInfo($libraryId, 'id,uid,team_id,name,desc,create_time,update_time,cover');
+        $libraryInfo = LibraryService::getLibraryInfo($libraryId, 'id,uid,team_id,name,desc,create_time,update_time,cover,editor');
         return $this->responseData($libraryInfo->toArray());
     }
 

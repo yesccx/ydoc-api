@@ -56,7 +56,7 @@ class LibraryShareController extends AppBaseController {
             return $this->responseError('内容不存在');
         }
 
-        $collection = LibraryDocService::getLibraryDocCollection($libraryId, 'id,library_id,group_id,title,sort,update_time');
+        $collection = LibraryDocService::getLibraryDocCollection($libraryId, 'id,library_id,group_id,title,sort,update_time,editor');
 
         return $this->responseData($collection);
     }
@@ -96,7 +96,7 @@ class LibraryShareController extends AppBaseController {
             return $this->responseError('内容不存在');
         }
 
-        $docInfo = LibraryDocService::getLibraryDocInfo($docId, 'id,library_id,group_id,title,content,sort,update_time');
+        $docInfo = LibraryDocService::getLibraryDocInfo($docId, 'id,library_id,group_id,title,content,sort,update_time,editor');
         if (empty($docInfo)) {
             return $this->responseError('文档不存在');
         } else if ($docInfo['library_id'] != $libraryId) {

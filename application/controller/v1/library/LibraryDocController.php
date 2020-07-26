@@ -42,7 +42,7 @@ class LibraryDocController extends AppBaseController {
     public function libraryDocCreate() {
         LibraryMemberOperate::checkOperate(LibraryMemberOperateCode::LIBRARY_DOC__CREATE);
 
-        $docEntity = YLibraryDocEntity::inputMake(['title/s' => '', 'content/s' => '', 'group_id/d' => 0]);
+        $docEntity = YLibraryDocEntity::inputMake(['title/s' => '', 'content/s' => '', 'group_id/d' => 0, 'editor/s' => '']);
         $docEntity->library_id = $this->request->libraryId;
 
         $docCreate = LibraryDocCreateLogic::make();
@@ -59,7 +59,7 @@ class LibraryDocController extends AppBaseController {
     public function libraryDocModify() {
         LibraryMemberOperate::checkOperate(LibraryMemberOperateCode::LIBRARY_DOC__MODIFY);
 
-        $docEntity = YLibraryDocEntity::inputMake(['title/s' => '', 'content/s' => '', 'group_id/d' => 0]);
+        $docEntity = YLibraryDocEntity::inputMake(['title/s' => '', 'content/s' => '', 'group_id/d' => 0, 'editor/s' => '']);
         $docEntity->library_id = $this->request->libraryId;
         $docEntity->id = $this->request->libraryDocId;
 
@@ -77,7 +77,7 @@ class LibraryDocController extends AppBaseController {
     public function libraryDocBaseModify() {
         LibraryMemberOperate::checkOperate(LibraryMemberOperateCode::LIBRARY_DOC__MODIFY);
 
-        $docEntity = YLibraryDocEntity::inputMake(['title/s' => '', 'group_id/d' => 0]);
+        $docEntity = YLibraryDocEntity::inputMake(['title/s' => '', 'group_id/d' => 0, 'editor/s' => '']);
         $docEntity->library_id = $this->request->libraryId;
         $docEntity->id = $this->request->libraryDocId;
 
@@ -95,7 +95,7 @@ class LibraryDocController extends AppBaseController {
     public function libraryDocCollection() {
         $libraryId = $this->request->libraryId;
 
-        $collection = LibraryDocService::getLibraryDocCollection($libraryId, 'id,library_id,group_id,title,sort,update_time');
+        $collection = LibraryDocService::getLibraryDocCollection($libraryId, 'id,library_id,group_id,title,sort,update_time,editor');
 
         return $this->responseData($collection);
     }
@@ -106,7 +106,7 @@ class LibraryDocController extends AppBaseController {
     public function libraryDocInfo() {
         $libraryDocId = $this->request->libraryDocId;
 
-        $docInfo = LibraryDocService::getLibraryDocInfo($libraryDocId, 'id,library_id,group_id,title,content,sort,update_time');
+        $docInfo = LibraryDocService::getLibraryDocInfo($libraryDocId, 'id,library_id,group_id,title,content,sort,update_time,editor');
 
         return $this->responseData($docInfo);
     }

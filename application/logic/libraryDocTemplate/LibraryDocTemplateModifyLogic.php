@@ -51,7 +51,7 @@ class LibraryDocTemplateModifyLogic extends BaseLogic {
         $libraryDocTemplateEntity->update_time = time();
 
         $libraryDocTemplate = YLibraryDocTemplateModel::update(
-            $libraryDocTemplateEntity->toArray(), ['id' => $libraryDocTemplateEntity->id], 'name,introduction,content,update_time'
+            $libraryDocTemplateEntity->toArray(), ['id' => $libraryDocTemplateEntity->id], 'name,introduction,content,update_time,editor'
         );
         if (empty($libraryDocTemplate)) {
             throw new AppException('未知错误');

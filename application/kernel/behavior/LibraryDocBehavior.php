@@ -15,9 +15,8 @@ class LibraryDocBehavior {
      * @return void
      */
     public function libraryDocModify(YLibraryDocHistoryEntity $docHistoryEntity) {
-        if (empty($docInfo = LibraryDocService::getLibraryDocInfo(
-            $docHistoryEntity->doc_id, 'library_id,group_id,title,content,sort'
-        ))) {
+        $docInfo = LibraryDocService::getLibraryDocInfo($docHistoryEntity->doc_id, 'library_id,group_id,title,content,sort,editor');
+        if (empty($docInfo)) {
             return false;
         }
 
@@ -25,6 +24,7 @@ class LibraryDocBehavior {
         $docHistoryEntity->group_id = $docInfo['group_id'];
         $docHistoryEntity->title = $docInfo['title'];
         $docHistoryEntity->content = $docInfo['content'];
+        $docHistoryEntity->editor = $docInfo['editor'];
         $docHistoryEntity->sort = $docInfo['sort'];
 
         // 文档修改记录

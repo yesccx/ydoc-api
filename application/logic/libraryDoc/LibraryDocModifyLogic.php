@@ -61,7 +61,7 @@ class LibraryDocModifyLogic extends BaseLogic {
         ]));
 
         $libraryDoc = YLibraryDocModel::update(
-            $libraryDocEntity->toArray(), ['id' => $libraryDocEntity->id], 'title,content,group_id,update_time'
+            $libraryDocEntity->toArray(), ['id' => $libraryDocEntity->id], 'title,content,group_id,update_time,editor'
         );
         if (empty($libraryDoc)) {
             throw new AppException('未知错误');

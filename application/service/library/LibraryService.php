@@ -108,7 +108,7 @@ class LibraryService {
 
         // 获取文档库偏好设置
         $libraryConfig = YLibraryConfigModel::where(['uid' => 0, 'library_id' => $libraryId])->field('config')->find();
-        if (!empty($libraryConfig) && $libraryConfig['config'][LibraryPreferenceCode::USE_PREFERENCE] == 1) {
+        if (!empty($libraryConfig['config']) && $libraryConfig['config'][LibraryPreferenceCode::USE_PREFERENCE] == 1) {
             $libraryConfig = $libraryConfig['config'];
         } else {
             $libraryConfig = [];
@@ -116,7 +116,7 @@ class LibraryService {
 
         // 获取成员偏好设置
         $libraryMemberConfig = YLibraryConfigModel::where(['uid' => $memberId, 'library_id' => $libraryId])->field('config')->find();
-        if (!empty($libraryMemberConfig) && $libraryMemberConfig['config'][LibraryPreferenceCode::USE_PREFERENCE] == 1) {
+        if (!empty($libraryMemberConfig['config']) && $libraryMemberConfig['config'][LibraryPreferenceCode::USE_PREFERENCE] == 1) {
             $libraryMemberConfig = $libraryMemberConfig['config'];
 
             // 成员偏好设置仅支持部分（多余的要删除）
@@ -127,18 +127,23 @@ class LibraryService {
 
         // 合并偏好设置
         $resUseConfig = array_merge($libraryConfig, $libraryMemberConfig);
+        unset($resUseConfig[LibraryPreferenceCode::LIBRARY_DOC_DEFAULT_EDITOR]);
 
-        // 当没有有效的偏好设置或成员没有自定义偏好设置时，取用户偏好设置
-        if (empty($resUseConfig) || empty($libraryMemberConfig)) {
-            $userConfig = YUserConfigModel::where(['uid' => $memberId])->field('config')->find();
-            if (!empty($userConfig) && $userConfig['config'][LibraryPreferenceCode::USE_PREFERENCE] == 1) {
-                $userConfig = $userConfig['config'];
+        // 获取用户偏好设置
+        $userConfig = YUserConfigModel::where(['uid' => $memberId])->field('config')->find();
+        if (!empty($userConfig['config']) && $userConfig['config'][LibraryPreferenceCode::USE_PREFERENCE] == 1) {
+            $userConfig = $userConfig['config'];
+
+            // 当没有有效的偏好设置或成员没有自定义偏好设置时，取用户偏好设置
+            if (empty($resUseConfig) || empty($libraryMemberConfig)) {
 
                 // 偏好设置仅支持部分（多余的要删除）
                 unset($userConfig[LibraryPreferenceCode::LIBRARY_DEFAULT_STYLE]);
 
                 // 合并偏好设置
                 $resUseConfig = array_merge($libraryConfig, $userConfig);
+            } else {
+                $resUseConfig[LibraryPreferenceCode::LIBRARY_DOC_DEFAULT_EDITOR] = $userConfig[LibraryPreferenceCode::LIBRARY_DOC_DEFAULT_EDITOR];
             }
         }
 

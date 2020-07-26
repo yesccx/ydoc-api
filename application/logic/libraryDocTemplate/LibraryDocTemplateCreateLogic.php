@@ -48,7 +48,9 @@ class LibraryDocTemplateCreateLogic extends BaseLogic {
      * @throws AppException
      */
     public function create() {
-        $libraryDocTemplate = YLibraryDocTemplateModel::create($this->libraryDocTemplateEntity->toArray(), 'uid,name,introduction,content,create_time');
+        $libraryDocTemplate = YLibraryDocTemplateModel::create(
+            $this->libraryDocTemplateEntity->toArray(), 'uid,name,introduction,content,create_time,editor'
+        );
         if (empty($libraryDocTemplate)) {
             throw new AppException('未知错误');
         }

@@ -14,6 +14,9 @@ class LibraryPreferenceCode {
     // 文档默认使用模板
     const LIBRARY_DOC_DEFAULT_TEMPLATE = 'library_doc_default_template';
 
+    // 文档默认使用编辑器
+    const LIBRARY_DOC_DEFAULT_EDITOR = 'library_doc_default_editor';
+
     // 文档库默认风格
     const LIBRARY_DEFAULT_STYLE = 'library_default_style';
 

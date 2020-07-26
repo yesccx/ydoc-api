@@ -37,7 +37,7 @@ class LibraryDocHistoryController extends AppBaseController {
         $libraryDocId = $this->request->libraryDocId;
 
         // 获取列表数据
-        $query = AppQuery::make()->field('id,title,library_id,uid,create_time,update_time,doc_id')->order('id', 'desc');
+        $query = AppQuery::make()->field('id,title,library_id,uid,create_time,update_time,doc_id,editor')->order('id', 'desc');
         $pageList = LibraryDocHistoryService::getLibraryDocHistoryList($libraryDocId, $query, $pagination)->toArray();
 
         // 追加文档库信息
@@ -56,7 +56,7 @@ class LibraryDocHistoryController extends AppBaseController {
     public function libraryDocHistoryInfo() {
         $docHistoryId = $this->request->docHistoryId;
         $docHistoryInfo = LibraryDocHistoryService::getLibraryDocHistoryInfo(
-            $docHistoryId, 'id,library_id,doc_id,title,content,group_id'
+            $docHistoryId, 'id,library_id,doc_id,title,content,group_id,editor'
         );
 
         return $this->responseData($docHistoryInfo);

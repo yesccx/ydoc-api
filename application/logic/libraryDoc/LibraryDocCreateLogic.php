@@ -82,7 +82,7 @@ class LibraryDocCreateLogic extends BaseLogic {
      * @throws AppException
      */
     public function create() {
-        $libraryDoc = YLibraryDocModel::create($this->libraryDocEntity->toArray(), 'library_id,group_id,title,content,sort,create_time');
+        $libraryDoc = YLibraryDocModel::create($this->libraryDocEntity->toArray(), 'library_id,group_id,title,content,sort,create_time,editor');
         if (empty($libraryDoc)) {
             throw new AppException('未知错误');
         }
@@ -93,7 +93,9 @@ class LibraryDocCreateLogic extends BaseLogic {
 
         // 文档库操作日志
         LibraryOperateLog::record(
-            $this->libraryDocEntity->library_id, LibraryOperateCode::LIBRARY_DOC_CREATE, '文档：' . $libraryDoc['title'], $this->libraryDocEntity->toArray()
+            $this->libraryDocEntity->library_id,
+            LibraryOperateCode::LIBRARY_DOC_CREATE, '文档：' . $libraryDoc['title'],
+            $this->libraryDocEntity->toArray()
         );
 
         return $this;
