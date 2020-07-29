@@ -13,6 +13,7 @@ use app\constants\module\LibraryMemberOperateCode;
 use app\entity\model\YLibraryEntity;
 use app\extend\common\AppPagination;
 use app\extend\common\AppQuery;
+use app\extend\library\LibraryDocFulltextIndex;
 use app\extend\library\LibraryMemberOperate;
 use app\kernel\base\AppBaseController;
 use app\logic\library\LibraryCreateLogic;
@@ -27,7 +28,7 @@ class LibraryCenterController extends AppBaseController {
     protected $middleware = [
         \app\kernel\middleware\library\LibraryAuthMiddleware::class => [ // 文档库操作鉴权
             'only' => [
-                'libraryInfo', 'libraryModify', 'libraryRemove', 'libraryTransfer', 'libraryPreference',
+                'libraryInfo', 'libraryModify', 'libraryRemove', 'libraryTransfer', 'libraryPreference'
             ],
         ],
     ];
@@ -57,7 +58,7 @@ class LibraryCenterController extends AppBaseController {
         });
 
         // 获取列表数据
-        $query->field('id,library_id,library_name,group_id,uid')->order('id', 'desc');
+        $query->field('id,library_id,library_name,group_id,uid')->order(['sort' => 'asc', 'id' => 'desc']);
         $pageList = LibraryService::getMemberLibraryList($this->uid, $query, $pagination)->toArray();
 
         // 追加文档库信息
@@ -169,6 +170,28 @@ class LibraryCenterController extends AppBaseController {
         });
 
         return $this->responseSuccess('转让成功');
+    }
+
+    /**
+     * 文档库全文检索
+     */
+    public function libraryFulltextSearch(AppPagination $pagination) {
+        $searchKey = $this->input('search_key/s', '');
+        if (empty($searchKey)) {
+            return $this->responseError('搜索关键字不能为空');
+        }
+
+        $fulltextSearch = LibraryDocFulltextIndex::make()->setLimit($pagination->pageSize, ($pagination->pageNum - 1) * $pagination->pageSize);
+        $fulltextData = $fulltextSearch->search("\"{$searchKey}\"");
+
+        $pageList = AppPagination::make()->setPageData([
+            'list'      => LibraryDocFulltextIndex::handleResultData($fulltextData['doc']),
+            'total'     => $fulltextData['count'],
+            'page_size' => $pagination->pageSize,
+            'page_num'  => (int) ceil($fulltextData['count'] / $pagination->pageSize),
+        ]);
+
+        return $this->responseData($pageList);
     }
 
 }

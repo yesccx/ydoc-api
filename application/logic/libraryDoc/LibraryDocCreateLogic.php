@@ -89,14 +89,7 @@ class LibraryDocCreateLogic extends BaseLogic {
 
         $this->libraryDocEntity = $libraryDoc->toEntity();
 
-        AppHook::listen(AppHookCode::LIBRARY_DOC_CREATED);
-
-        // 文档库操作日志
-        LibraryOperateLog::record(
-            $this->libraryDocEntity->library_id,
-            LibraryOperateCode::LIBRARY_DOC_CREATE, '文档：' . $libraryDoc['title'],
-            $this->libraryDocEntity->toArray()
-        );
+        AppHook::listen(AppHookCode::LIBRARY_DOC_CREATE_AFTER, [$this->libraryDocEntity, $this->uid]);
 
         return $this;
     }

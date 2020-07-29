@@ -30,3 +30,6 @@ define('APP_ROOT_STATIC_URL', APP_ROOT_URL . '/public');
 
 // 静态临时资源根url
 define('APP_ROOT_STATIC_TMP_URL', APP_ROOT_STATIC_URL . '/tmp');
+
+// xunsearch
+define('XS_APP_ROOT', ROOT_PATH . 'config');

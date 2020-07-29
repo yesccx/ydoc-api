@@ -88,7 +88,7 @@ class LibraryRemoveLogic extends BaseLogic {
         YLibraryModel::where(['id' => $this->libraryId])->softDelete();
 
         // 后续的清理动作在文档库删除事件中进行
-        AppHook::listen(AppHookCode::LIBRARY_REMOVED, $this->libraryId, false, false);
+        AppHook::listen(AppHookCode::LIBRARY_REMOVE_AFTER, $this->libraryId, false, false);
 
         // 文档库操作日志
         LibraryOperateLog::record($this->libraryId, LibraryOperateCode::LIBRARY_REMOVE);

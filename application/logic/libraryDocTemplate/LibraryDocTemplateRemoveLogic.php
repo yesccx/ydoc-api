@@ -60,7 +60,7 @@ class LibraryDocTemplateRemoveLogic extends BaseLogic {
             throw new AppException('删除失败');
         }
 
-        AppHook::listen(AppHookCode::LIBRARY_DOC_TEMPLATE_REMOVED, $this->libraryDocTemplateEntity->id);
+        AppHook::listen(AppHookCode::LIBRARY_DOC_TEMPLATE_REMOVE_AFTER, $this->libraryDocTemplateEntity->id);
 
         return $this;
     }

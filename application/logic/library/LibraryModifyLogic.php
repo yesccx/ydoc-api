@@ -59,7 +59,7 @@ class LibraryModifyLogic extends BaseLogic {
             throw new AppException('文档库修改失败，可能操作过快');
         }
 
-        AppHook::listen(AppHookCode::LIBRARY_MODIFYED, $libraryEntity);
+        AppHook::listen(AppHookCode::LIBRARY_MODIFY_AFTER, $libraryEntity);
 
         // 文档库操作日志
         LibraryOperateLog::record($libraryEntity->id, LibraryOperateCode::LIBRARY_MODIFY, '修改基本信息', $libraryEntity->toArray());

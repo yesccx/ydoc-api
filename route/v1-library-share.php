@@ -12,6 +12,7 @@ use think\facade\Route;
 
 Route::group('v1/library/share', function () {
     Route::post('info', 'shareInfo');
+    Route::post('fulltext-search', 'shareFulltextSearch');
     Route::post('doc-collection', 'shareDocCollection');
     Route::post('doc-group-tree', 'shareDocGroupTree');
     Route::post('doc-info', 'shareDocInfo');

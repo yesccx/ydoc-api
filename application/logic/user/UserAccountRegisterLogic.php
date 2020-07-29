@@ -69,7 +69,7 @@ class UserAccountRegisterLogic extends BaseLogic {
         }
         $this->userEntity = $userInfo->toEntity();
 
-        AppHook::listen(AppHookCode::USER_REGISTED, $this->userEntity);
+        AppHook::listen(AppHookCode::USER_REGISTER_AFTER, $this->userEntity);
 
         return $this;
     }

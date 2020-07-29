@@ -31,7 +31,7 @@ class LibraryShareAuthMiddleware {
             $shareCode, 'id,library_id,uid,doc_id,share_name,share_desc,expire_time,access_password,status,is_protected,create_time,share_code'
         );
         if (empty($shareInfo)) {
-            return AppResponse::error('分享内容不存在');
+            return AppResponse::error('分享内容不存在或已被删除');
         } else if ($shareInfo['status'] != YLibraryShareCode::STATUS__ENABLED) {
             return AppResponse::error('分享已被禁用或正在审核中');
         } else if (!empty($shareInfo['expire_time']) && $shareInfo['expire_time'] < time()) {

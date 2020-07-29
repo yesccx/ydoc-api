@@ -11,6 +11,8 @@ namespace app\controller\v1\library;
 
 use app\constants\module\LibraryMemberOperateCode;
 use app\entity\model\YLibraryDocEntity;
+use app\extend\common\AppPagination;
+use app\extend\library\LibraryDocFulltextIndex;
 use app\extend\library\LibraryMemberOperate;
 use app\kernel\base\AppBaseController;
 use app\logic\libraryDoc\LibraryDocCreateLogic;
@@ -26,6 +28,7 @@ class LibraryDocController extends AppBaseController {
         \app\kernel\middleware\library\LibraryAuthMiddleware::class    => [ // 文档库操作鉴权
             'only' => [
                 'libraryDocCollection', 'libraryDocInfo', 'libraryDocCreate', 'libraryDocModify',
+                'libraryDocFulltextSearch',
             ],
         ],
         \app\kernel\middleware\library\LibraryDocAuthMiddleware::class => [ // 文档操作鉴权
@@ -145,6 +148,28 @@ class LibraryDocController extends AppBaseController {
 
         return $this->responseSuccess('修改成功');
 
+    }
+    /**
+     * 文档全文检索
+     */
+    public function libraryDocFulltextSearch(AppPagination $pagination) {
+        $searchKey = $this->input('search_key/s', '');
+        if (empty($searchKey)) {
+            return $this->responseError('搜索关键字不能为空');
+        }
+        $libraryId = $this->request->libraryId;
+
+        $fulltextSearch = LibraryDocFulltextIndex::make()->setLimit($pagination->pageSize, ($pagination->pageNum - 1) * $pagination->pageSize);
+        $fulltextData = $fulltextSearch->search("\"{$searchKey}\" AND library_id:{$libraryId}");
+
+        $pageList = AppPagination::make()->setPageData([
+            'list'      => LibraryDocFulltextIndex::handleResultData($fulltextData['doc']),
+            'total'     => $fulltextData['count'],
+            'page_size' => $pagination->pageSize,
+            'page_num'  => (int) ceil($fulltextData['count'] / $pagination->pageSize),
+        ]);
+
+        return $this->responseData($pageList);
     }
 
 }

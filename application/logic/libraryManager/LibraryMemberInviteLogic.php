@@ -130,7 +130,7 @@ class LibraryMemberInviteLogic extends BaseLogic {
         }
         $this->libraryMemberEntity = $libraryMemberInfo->toEntity();
 
-        AppHook::listen(AppHookCode::LIBRARY_INVITED, $this->libraryMemberEntity);
+        AppHook::listen(AppHookCode::LIBRARY_INVITE_AFTER, $this->libraryMemberEntity);
 
         // 文档库操作日志
         if ($libraryMemberEntity->urole === YLibraryMemberCode::ROLE__CREATOR) {

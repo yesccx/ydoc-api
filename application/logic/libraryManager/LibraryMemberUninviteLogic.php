@@ -66,7 +66,7 @@ class LibraryMemberUninviteLogic extends BaseLogic {
             throw new AppException('移除失败');
         }
 
-        AppHook::listen(AppHookCode::LIBRARY_MEMBER_UNINVITE, $this->libraryMemberEntity);
+        AppHook::listen(AppHookCode::LIBRARY_MEMBER_UNINVITE_AFTER, $this->libraryMemberEntity);
 
         // 文档库操作日志
         $userInfo = UserService::getUserInfo($this->libraryMemberEntity->uid, 'nickname');

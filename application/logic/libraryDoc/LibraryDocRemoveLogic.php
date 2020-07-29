@@ -9,10 +9,10 @@
 
 namespace app\logic\libraryDoc;
 
-use app\constants\common\LibraryOperateCode;
+use app\constants\common\AppHookCode;
 use app\entity\model\YLibraryDocEntity;
 use app\exception\AppException;
-use app\extend\library\LibraryOperateLog;
+use app\extend\common\AppHook;
 use app\kernel\model\YLibraryDocModel;
 use app\logic\extend\BaseLogic;
 use app\service\library\LibraryDocService;
@@ -55,17 +55,12 @@ class LibraryDocRemoveLogic extends BaseLogic {
      * @throws AppException
      */
     public function remove() {
-        $docInfo = LibraryDocService::getLibraryDocInfo($this->libraryDocEntity->id, 'library_id,title');
+        AppHook::listen(AppHookCode::LIBRARY_DOC_REMOVE_BEFORE, [$this->libraryDocEntity->id, $this->uid]);
 
         $deleteRes = YLibraryDocModel::where(['id' => $this->libraryDocEntity->id])->softDelete();
         if (empty($deleteRes)) {
             throw new AppException('删除失败');
         }
-
-        // 文档库操作日志
-        LibraryOperateLog::record(
-            $docInfo['library_id'], LibraryOperateCode::LIBRARY_DOC_REMOVE, '文档：' . $docInfo['title'], $docInfo
-        );
 
         return $this;
     }

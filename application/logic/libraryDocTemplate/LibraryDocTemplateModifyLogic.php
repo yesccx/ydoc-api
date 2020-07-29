@@ -57,7 +57,7 @@ class LibraryDocTemplateModifyLogic extends BaseLogic {
             throw new AppException('未知错误');
         }
 
-        AppHook::listen(AppHookCode::LIBRARY_DOC_TEMPLATE_MODIFYED, $libraryDocTemplateEntity);
+        AppHook::listen(AppHookCode::LIBRARY_DOC_TEMPLATE_MODIFY_AFTER, $libraryDocTemplateEntity);
 
         return $this;
     }

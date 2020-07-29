@@ -15,29 +15,38 @@ use app\constants\common\AppHookCode;
 
 return [
     // 应用初始化
-    'app_init'                      => [],
+    'app_init'                             => [],
     // 应用开始
-    'app_begin'                     => [
+    'app_begin'                            => [
         app\kernel\behavior\ModelBehavior::class,
     ],
     // 模块初始化
-    'module_init'                   => [],
+    'module_init'                          => [],
     // 操作开始执行
-    'action_begin'                  => [],
+    'action_begin'                         => [],
     // 视图内容过滤
-    'view_filter'                   => [],
+    'view_filter'                          => [],
     // 日志写入
-    'log_write'                     => [],
+    'log_write'                            => [],
     // 应用结束
-    'app_end'                       => [],
+    'app_end'                              => [],
     // 用户注册成功后
-    AppHookCode::USER_REGISTED      => [
+    AppHookCode::USER_REGISTER_AFTER       => [
         app\kernel\behavior\UserBehavior::class,
     ],
-    AppHookCode::LIBRARY_REMOVED    => [
+    AppHookCode::LIBRARY_REMOVE_AFTER      => [
         app\kernel\behavior\LibraryBehavior::class,
     ],
-    AppHookCode::LIBRARY_DOC_MODIFY => [
+    AppHookCode::LIBRARY_DOC_MODIFY_BEFORE => [
+        app\kernel\behavior\LibraryDocBehavior::class,
+    ],
+    AppHookCode::LIBRARY_DOC_MODIFY_AFTER  => [
+        app\kernel\behavior\LibraryDocBehavior::class,
+    ],
+    AppHookCode::LIBRARY_DOC_CREATE_AFTER  => [
+        app\kernel\behavior\LibraryDocBehavior::class,
+    ],
+    AppHookCode::LIBRARY_DOC_REMOVE_BEFORE  => [
         app\kernel\behavior\LibraryDocBehavior::class,
     ],
 ];

@@ -10,6 +10,8 @@
 namespace app\controller\v1\library;
 
 use app\constants\module\LibraryPreferenceCode;
+use app\extend\common\AppPagination;
+use app\extend\library\LibraryDocFulltextIndex;
 use app\extend\library\LibraryDocGroupTree;
 use app\kernel\base\AppBaseController;
 use app\service\library\LibraryDocGroupService;
@@ -19,6 +21,14 @@ use app\service\library\LibraryShareService;
 use app\service\UserService;
 
 class LibraryShareController extends AppBaseController {
+
+    protected $middleware = [
+        \app\kernel\middleware\library\LibraryFullShareAuthMiddleware::class => [ // 文档库整个分享时的操作鉴权 PS: 限制单文档分享时，获取文档库的其它信息
+            'only' => [
+                'shareDocCollection', 'shareDocGroupTree', 'shareFulltextSearch',
+            ],
+        ],
+    ];
 
     /**
      * 分享信息
@@ -104,6 +114,29 @@ class LibraryShareController extends AppBaseController {
         }
 
         return $this->responseData($docInfo);
+    }
+
+    /**
+     * 分享的文档库全文检索
+     */
+    public function shareFulltextSearch(AppPagination $pagination) {
+        $searchKey = $this->input('search_key/s', '');
+        if (empty($searchKey)) {
+            return $this->responseError('搜索关键字不能为空');
+        }
+        $libraryId = $this->request->shareLibraryId;
+
+        $fulltextSearch = LibraryDocFulltextIndex::make()->setLimit($pagination->pageSize, ($pagination->pageNum - 1) * $pagination->pageSize);
+        $fulltextData = $fulltextSearch->search("\"{$searchKey}\" AND library_id:{$libraryId}");
+
+        $pageList = AppPagination::make()->setPageData([
+            'list'      => LibraryDocFulltextIndex::handleResultData($fulltextData['doc']),
+            'total'     => $fulltextData['count'],
+            'page_size' => $pagination->pageSize,
+            'page_num'  => (int) ceil($fulltextData['count'] / $pagination->pageSize),
+        ]);
+
+        return $this->responseData($pageList);
     }
 
 }

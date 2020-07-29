@@ -57,7 +57,7 @@ class LibraryDocTemplateCreateLogic extends BaseLogic {
 
         $this->libraryDocTemplateEntity = $libraryDocTemplate->toEntity();
 
-        AppHook::listen(AppHookCode::LIBRARY_DOC_TEMPLATE_CREATED, $this->libraryDocTemplateEntity);
+        AppHook::listen(AppHookCode::LIBRARY_DOC_TEMPLATE_CREATE_AFTER, $this->libraryDocTemplateEntity);
 
         return $this;
     }

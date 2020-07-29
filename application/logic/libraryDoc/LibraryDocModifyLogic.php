@@ -55,10 +55,7 @@ class LibraryDocModifyLogic extends BaseLogic {
         $libraryDocEntity->update_time = time();
 
         // 文档修改前，需要触发保存历史记录
-        AppHook::listen(AppHookCode::LIBRARY_DOC_MODIFY, YLibraryDocHistoryEntity::make([
-            'doc_id' => $libraryDocEntity->id,
-            'uid'    => $this->uid,
-        ]));
+        AppHook::listen(AppHookCode::LIBRARY_DOC_MODIFY_BEFORE, [$libraryDocEntity, $this->uid]);
 
         $libraryDoc = YLibraryDocModel::update(
             $libraryDocEntity->toArray(), ['id' => $libraryDocEntity->id], 'title,content,group_id,update_time,editor'
@@ -67,10 +64,7 @@ class LibraryDocModifyLogic extends BaseLogic {
             throw new AppException('未知错误');
         }
 
-        // 文档库操作日志
-        LibraryOperateLog::record(
-            $libraryDocEntity->library_id, LibraryOperateCode::LIBRARY_DOC_MODIFY, '文档：' . $libraryDocEntity->title, $libraryDocEntity->toArray()
-        );
+        AppHook::listen(AppHookCode::LIBRARY_DOC_MODIFY_AFTER, [$libraryDocEntity, $this->uid]);
 
         return $this;
     }

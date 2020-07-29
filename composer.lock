@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f9bd0f4b4e003c542a6fe39e2a78fb65",
+    "content-hash": "fe94a07d78b69bbe3a73578a66239ee6",
     "packages": [
         {
             "name": "firebase/php-jwt",
@@ -657,6 +657,52 @@
             ],
             "description": "A polyfill for getallheaders.",
             "time": "2019-03-08T08:55:37+00:00"
+        },
+        {
+            "name": "shaozeming/xunsearch",
+            "version": "v3.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/ShaoZeMing/xunsearch.git",
+                "reference": "c6d1a4e78a5a5f80f3a74774b456bd4860ee7b0b"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/ShaoZeMing/xunsearch/zipball/c6d1a4e78a5a5f80f3a74774b456bd4860ee7b0b",
+                "reference": "c6d1a4e78a5a5f80f3a74774b456bd4860ee7b0b",
+                "shasum": "",
+                "mirrors": [
+                    {
+                        "url": "https://mirrors.cloud.tencent.com/composer/dists/%package%/%reference%.%type%",
+                        "preferred": true
+                    }
+                ]
+            },
+            "require": {
+                "php": ">=5.6"
+            },
+            "require-dev": {
+                "mockery/mockery": "^0.9.9",
+                "phpunit/phpunit": "^6.3"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "ShaoZeMing\\Xunsearch\\": "./src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "ShaoZeMing",
+                    "email": "szm19920426@gmail.com"
+                }
+            ],
+            "description": "xunsearch【讯搜全文索引】composer package",
+            "time": "2018-12-29T02:30:46+00:00"
         },
         {
             "name": "topthink/framework",

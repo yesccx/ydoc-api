@@ -16,12 +16,13 @@ use app\extend\library\LibraryPreferenceHandler;
 class UserBehavior {
 
     /**
-     * 用户注册成功后初始化
+     * 用户注册成功后
+     * PS: 初始化用户
      *
      * @param YUserEntity $userEntity 用户实体对象
      * @return void
      */
-    public function userRegisted(YUserEntity $userEntity) {
+    public function userRegisterAfter(YUserEntity $userEntity) {
         // TODO: 用户注册成功后，初始化头像等信息
 
         // 初始化用户头像

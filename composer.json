@@ -20,7 +20,8 @@
         "topthink/framework": "5.1.*",
         "firebase/php-jwt": "^5.0",
         "qiniu/php-sdk": "^7.2",
-        "lasserafn/php-initial-avatar-generator": "^4.1"
+        "lasserafn/php-initial-avatar-generator": "^4.1",
+        "shaozeming/xunsearch": "^3.0"
     },
     "autoload": {
         "psr-4": {

@@ -18,6 +18,7 @@ Route::group('v1/library/center', function () {
     Route::post('modify', 'libraryModify');
     Route::post('remove', 'libraryRemove');
     Route::post('transfer', 'libraryTransfer');
+    Route::post('fulltext-search', 'libraryFulltextSearch');
 })->prefix('v1.library.LibraryCenter/')->middleware('AppSessionMiddleware');
 
 return [];
