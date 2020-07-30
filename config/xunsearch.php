@@ -13,8 +13,8 @@ return [
             'id'                      => ['type' => 'id'],
             'title'                   => ['type' => 'title', 'index' => 'mixed', 'cutlen' => 150, 'tokenizer' => 'scws(7)'],
             'content'                 => ['type' => 'body', 'index' => 'mixed', 'cutlen' => 150, 'tokenizer' => 'scws(7)'],
-            'library_id'              => ['type' => 'string', 'index' => 'self', 'tokenizer' => 'full'],
-            'library_doc_id'          => ['type' => 'string', 'index' => 'self', 'tokenizer' => 'full'],
+            'library_id'              => ['type' => 'numeric', 'index' => 'self', 'tokenizer' => 'full'],
+            'library_doc_id'          => ['type' => 'numeric', 'index' => 'self', 'tokenizer' => 'full'],
         ],
     ],
 ];

@@ -34,7 +34,7 @@ class AppFulltextIndex {
      * 处理结果数据
      *
      * @param array $data
-     * @return arary
+     * @return array
      */
     public static function handleResultData($data) {
         $resData = [];

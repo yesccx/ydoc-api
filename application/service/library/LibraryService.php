@@ -46,6 +46,17 @@ class LibraryService {
     }
 
     /**
+     * 获取用户所有文档库集合
+     *
+     * @param Query|string|null $query 查询器
+     * @return mixed
+     */
+    public static function getLibraryCollection($query = null) {
+        $query = YLibraryModel::useQuery($query);
+        return $query->select();
+    }
+
+    /**
      * 获取文档库信息
      *
      * @param int $libraryId 文档库id
