@@ -177,15 +177,23 @@ class LibraryCenterController extends AppBaseController {
      */
     public function libraryFulltextSearch(AppPagination $pagination) {
         $searchKey = $this->input('search_key/s', '');
+        $libraryId = $this->input('library_id/d', 0);
         if (empty($searchKey)) {
             return $this->responseError('搜索关键字不能为空');
+        } else if (!empty($libraryId)) {
+            LibraryMemberOperate::make()->init($libraryId, $this->request->appSession->uid);
         }
 
         // 获取用户可操作的所有文档库集
-        $memberLibraryCollection = LibraryService::getMemberLibraryCollection($this->uid, 'library_id');
-        $memberLibraryCollection = array_column($memberLibraryCollection->toArray(), 'library_id');
-        if (empty($memberLibraryCollection)) {
-            return $this->responseData($pagination->toEmpty());
+        $memberLibraryCollection = [];
+        if (empty($libraryId)) {
+            $memberLibraryCollection = LibraryService::getMemberLibraryCollection($this->uid, 'library_id');
+            $memberLibraryCollection = array_column($memberLibraryCollection->toArray(), 'library_id');
+            if (empty($memberLibraryCollection)) {
+                return $this->responseData($pagination->toEmpty());
+            }
+        } else {
+            $memberLibraryCollection = ['library_id' => $libraryId];
         }
 
         // 拼接查询文档的条件
