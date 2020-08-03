@@ -98,7 +98,7 @@ class LibraryMemberShareController extends AppBaseController {
 
         $shareInfo = LibraryMemberShareService::getLibraryShareInfo(
             $this->uid, $libraryId,
-            'id,library_id,share_code,share_name,share_desc,access_password,access_count,is_protected,expire_time,create_time,update_time'
+            'id,library_id,share_code,share_name,share_desc,access_password,access_count,is_protected,expire_time,create_time,update_time,custom_content'
         );
         if (empty($shareInfo)) {
             return $this->responseError('分享不存在');
@@ -116,6 +116,7 @@ class LibraryMemberShareController extends AppBaseController {
             'share_name/s'      => '',
             'share_desc/s'      => '',
             'access_password/s' => '',
+            'custom_content/a'  => [],
             'expire_time/d'     => 0,
         ]);
         $docShareEntity->library_id = $this->request->libraryId;

@@ -28,7 +28,7 @@ class LibraryShareAuthMiddleware {
 
         // 获取分享信息
         $shareInfo = LibraryShareService::getLibraryShareByCode(
-            $shareCode, 'id,library_id,uid,doc_id,share_name,share_desc,expire_time,access_password,status,is_protected,create_time,share_code'
+            $shareCode, 'id,library_id,uid,doc_id,share_name,share_desc,expire_time,access_password,status,is_protected,create_time,share_code,custom_content'
         );
         if (empty($shareInfo)) {
             return AppResponse::error('分享内容不存在或已被删除');
@@ -48,6 +48,7 @@ class LibraryShareAuthMiddleware {
             }
         }
 
+        $request->shareCustomContent = (array) $shareInfo['custom_content'];
         $request->shareId = $shareInfo['id'];
         $request->shareLibraryId = $shareInfo['library_id'];
         $request->shareLibraryDocId = $shareInfo['doc_id'];

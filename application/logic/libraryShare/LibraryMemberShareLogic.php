@@ -88,7 +88,7 @@ class LibraryMemberShareLogic extends BaseLogic {
 
         $docShare = YLibraryShareModel::create(
             $libraryShareEntity->toArray(),
-            'share_code,share_name,share_desc,access_password,expire_time,update_time,uid,library_id,is_protected'
+            'share_code,share_name,share_desc,access_password,expire_time,update_time,uid,library_id,is_protected,custom_content'
         );
         if (empty($docShare)) {
             throw new AppException('未知错误');
@@ -109,7 +109,7 @@ class LibraryMemberShareLogic extends BaseLogic {
 
         $updateRes = YLibraryShareModel::update(
             $libraryShareEntity->toArray(), ['id' => $libraryShareEntity->id],
-            'share_code,share_name,share_desc,access_password,expire_time,update_time,is_protected'
+            'share_code,share_name,share_desc,access_password,expire_time,update_time,is_protected,custom_content'
         );
         if (empty($updateRes)) {
             throw new AppException('未知错误');

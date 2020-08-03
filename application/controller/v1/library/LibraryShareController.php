@@ -59,6 +59,7 @@ class LibraryShareController extends AppBaseController {
      */
     public function shareDocCollection() {
         $libraryId = $this->request->shareLibraryId;
+        $shareCustomContent = $this->request->shareCustomContent;
 
         // 文档分享时，不能查看文档库内容
         $shareLibraryDocId = $this->request->shareLibraryDocId;
@@ -68,6 +69,13 @@ class LibraryShareController extends AppBaseController {
 
         $collection = LibraryDocService::getLibraryDocCollection($libraryId, 'id,library_id,group_id,title,sort,update_time,editor');
 
+        // 按自定义分享过滤
+        if (!empty($shareCustomContent)) {
+            $collection = array_values($collection->filter(function ($doc) use ($shareCustomContent) {
+                return in_array("doc{$doc['id']}", $shareCustomContent);
+            })->toArray());
+        }
+
         return $this->responseData($collection);
     }
 
@@ -76,6 +84,7 @@ class LibraryShareController extends AppBaseController {
      */
     public function shareDocGroupTree() {
         $libraryId = $this->request->shareLibraryId;
+        $shareCustomContent = $this->request->shareCustomContent;
 
         // 文档分享时，不能查看文档库内容
         $shareLibraryDocId = $this->request->shareLibraryDocId;
@@ -85,6 +94,14 @@ class LibraryShareController extends AppBaseController {
 
         // 获取文档分组集合，构建分组树
         $collection = LibraryDocGroupService::getLibraryDocGroupCollection($libraryId, 'id,library_id,pid,name,desc,sort');
+
+        // 按自定义分享过滤
+        if (!empty($shareCustomContent)) {
+            $collection = array_values($collection->filter(function ($group) use ($shareCustomContent) {
+                return in_array("vgroup{$group['id']}", $shareCustomContent) || in_array("group{$group['id']}", $shareCustomContent);
+            })->toArray());
+        }
+
         $tree = LibraryDocGroupTree::buildTree(0, $collection);
 
         return $this->responseData($tree);
@@ -97,12 +114,15 @@ class LibraryShareController extends AppBaseController {
         $shareLibraryDocId = $this->request->shareLibraryDocId;
         $libraryId = $this->request->shareLibraryId;
         $docId = $this->input('doc_id/d', $shareLibraryDocId);
+        $shareCustomContent = $this->request->shareCustomContent;
         if (empty($docId)) {
             return $this->responseError('缺少必要参数文档id');
         }
 
         // 文档分享时，仅能查看分享的文档内容
         if (!empty($shareLibraryDocId) && $shareLibraryDocId != $docId) {
+            return $this->responseError('内容不存在');
+        } else if (!empty($shareCustomContent) && !in_array("doc{$docId}", $shareCustomContent)) {
             return $this->responseError('内容不存在');
         }
 

@@ -25,6 +25,7 @@ CREATE TABLE `y_library_share` (
   `share_desc` varchar(255) NOT NULL DEFAULT '' COMMENT '分享简介',
   `access_password` varchar(32) NOT NULL DEFAULT '' COMMENT '访问密码',
   `access_count` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '访问计数',
+  `custom_content` text NOT NULL DEFAULT '' COMMENT '自定义内容，空为全部',
   `is_protected` tinyint(1) UNSIGNED NOT NULL DEFAULT 0 COMMENT '是否受保护 0非保护（不需要访问密码） 1受保护（需要访问密码）',
   `expire_time` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '过期时间 0为永不过期',
   `status` tinyint(1) UNSIGNED NOT NULL DEFAULT 1 COMMENT '文档库状态 0审核中 1启用 2禁用',

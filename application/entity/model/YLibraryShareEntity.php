@@ -22,6 +22,7 @@ use app\kernel\model\YLibraryShareModel;
  * @property string $share_desc 分享简介
  * @property string $access_password 访问密码
  * @property int $access_count 访问计数
+ * @property string $custom_content 自定义内容，空为全部
  * @property int $is_protected 是否受保护 0非保护（不需要访问密码） 1受保护（需要访问密码）
  * @property int $expire_time 过期时间 0为永不过期
  * @property int $status 文档库状态 0审核中 1启用 2禁用

@@ -26,6 +26,10 @@ class YLibraryShareModel extends BaseModel {
 
     protected $auto = ['is_protected'];
 
+    protected $type = [
+        'custom_content' => 'array',
+    ];
+
     // 自动完成：创建时间
     protected function setCreateTimeAttr() {
         return time();
