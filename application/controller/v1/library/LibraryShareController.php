@@ -47,6 +47,7 @@ class LibraryShareController extends AppBaseController {
         $libraryPreference = LibraryService::getLibraryPreference($libraryId);
         $libraryPreferenceStyle = $libraryPreference[LibraryPreferenceCode::LIBRARY_DEFAULT_STYLE];
         $shareInfo['library_style'] = $libraryPreferenceStyle;
+        $shareInfo['library_info'] = LibraryService::getLibraryInfo($libraryId, 'name,desc');
 
         // 累计访问量
         LibraryShareService::incShareAccessCount($shareId);
