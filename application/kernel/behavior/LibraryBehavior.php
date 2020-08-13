@@ -9,6 +9,7 @@
 
 namespace app\kernel\behavior;
 
+use app\entity\model\YLibraryEntity;
 use app\extend\library\LibraryDocFulltextIndex;
 use app\kernel\model\YLibraryConfigModel;
 use app\kernel\model\YLibraryDocGroupModel;
@@ -36,6 +37,19 @@ class LibraryBehavior {
 
         // 删除文档库全文索引
         LibraryDocFulltextIndex::delIndexByLibrary($libraryId);
+    }
+
+    /**
+     * 文档库信息修改
+     *
+     * @param int $libraryId 文档库id
+     * @return void
+     */
+    public function libraryModifyAfter(YLibraryEntity $libraryEntity) {
+        // 更新成员所持的文档库信息
+        YLibraryMemberModel::update([
+            'library_name' => $libraryEntity->name,
+        ], ['library_id' => $libraryEntity->id]);
     }
 
 }

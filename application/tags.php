@@ -34,6 +34,9 @@ return [
     AppHookCode::USER_REGISTER_AFTER       => [
         app\kernel\behavior\UserBehavior::class,
     ],
+    AppHookCode::LIBRARY_MODIFY_AFTER      => [
+        app\kernel\behavior\LibraryBehavior::class,
+    ],
     AppHookCode::LIBRARY_REMOVE_AFTER      => [
         app\kernel\behavior\LibraryBehavior::class,
     ],
@@ -46,7 +49,7 @@ return [
     AppHookCode::LIBRARY_DOC_CREATE_AFTER  => [
         app\kernel\behavior\LibraryDocBehavior::class,
     ],
-    AppHookCode::LIBRARY_DOC_REMOVE_BEFORE  => [
+    AppHookCode::LIBRARY_DOC_REMOVE_BEFORE => [
         app\kernel\behavior\LibraryDocBehavior::class,
     ],
 ];
